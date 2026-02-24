@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Play, ArrowRight } from 'lucide-react';
+import { ExternalLink, Github, Play, ArrowRight, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -163,7 +163,7 @@ function ProjectLink({
   label,
 }: {
   href: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
 }) {
   const handleClick = (e: React.MouseEvent) => {

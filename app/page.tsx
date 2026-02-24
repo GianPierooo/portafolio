@@ -7,7 +7,7 @@ import ProjectCard from '@/components/ui/ProjectCard';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
 import ContactForm from '@/components/ui/ContactForm';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Linkedin, Mail, ChevronDown, Code2, Server, Brain, Gamepad2, Wrench, Database, Cloud, Zap, MapPin, Calendar, Briefcase } from 'lucide-react';
+import { Github, Linkedin, Mail, ChevronDown, Code2, Server, Brain, Gamepad2, Wrench, Database, Cloud, Zap, MapPin, Calendar, Briefcase, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProjectCategory, getProjectsByCategory } from '@/lib/data';
 
@@ -559,7 +559,7 @@ function SocialLink({
   label,
 }: {
   href: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
 }) {
   return (
@@ -580,7 +580,7 @@ function SocialLink({
       {/* Glow effect */}
       <div className="absolute inset-0 -z-10 rounded-full bg-accent-cloud opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-40" />
       
-      <Icon className="h-5 w-5 text-slate-300 transition-colors group-hover:text-white" />
+      <Icon className="h-5 w-5 shrink-0 text-slate-300 transition-colors group-hover:text-white" />
     </motion.a>
   );
 }

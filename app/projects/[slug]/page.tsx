@@ -8,9 +8,7 @@ import { verticals, getProjectBySlugFromData, type Project } from '@/lib/data';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 
 interface ProjectPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 /**
@@ -193,8 +191,9 @@ function ProjectHeader({
  * Uses MDX when available, otherwise fallback from lib/data.ts
  */
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const mdxProject = await getProjectBySlug(params.slug);
-  const dataProject = getProjectBySlugFromData(params.slug);
+  const { slug } = await params;
+  const mdxProject = await getProjectBySlug(slug);
+  const dataProject = getProjectBySlugFromData(slug);
 
   const useMdx = !!mdxProject;
   if (!useMdx && !dataProject) {
@@ -203,7 +202,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const projectForHeader: Project = useMdx
     ? {
-        slug: params.slug,
+        slug,
         title: mdxProject!.frontmatter.title ?? '',
         summary: mdxProject!.frontmatter.summary ?? '',
         category: mdxProject!.frontmatter.category ?? ['cloud'],
