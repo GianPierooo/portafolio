@@ -10,45 +10,45 @@ links:
   demo: "https://logimatix.shop"
 ---
 
-## El problema
+## Problema
 
-Las empresas pierden horas en tareas repetitivas: gestión de datos, respuestas a clientes,
-coordinación entre sistemas que no se hablan entre sí. Cada proceso manual es un cuello de
-botella y una fuente de errores.
+Las empresas pierden horas en tareas repetitivas: gestión de datos, respuestas a
+clientes, coordinación entre sistemas que no se hablan entre sí. Cada proceso manual
+es un cuello de botella y una fuente de errores.
 
-Logimatix nace para resolverlo con **automatización inteligente operada sobre infraestructura propia**:
-no un script suelto, sino una plataforma.
+Logimatix nace para resolverlo con **automatización inteligente operada sobre
+infraestructura propia** — no un script suelto, sino una plataforma.
 
-## La arquitectura
+## Arquitectura
 
-El sistema corre íntegramente sobre **Oracle Cloud**, con control total del entorno:
+El sistema corre íntegramente sobre **Oracle Cloud**. Un trigger de negocio
+(formulario, email o webhook) entra por Nginx, lo procesa el orquestador n8n, y desde
+ahí se ramifica a la base de datos, a las APIs de IA y a las integraciones externas.
+
+<ArchitectureDiagram preset="logimatix" />
 
 - **Compute**: Ubuntu VMs administradas directamente (hardening, actualizaciones, monitoreo)
-- **Reverse proxy**: Nginx como capa de entrada, TLS y enrutamiento de servicios
-- **Datos**: PostgreSQL como base transaccional de flujos y clientes
-- **Orquestación**: n8n self-hosted para los flujos de automatización
+- **Reverse proxy**: Nginx como capa de entrada, TLS y enrutamiento
+- **Orquestación**: n8n self-hosted para los flujos
+- **Datos**: PostgreSQL como base transaccional y registro de ejecuciones
 - **Inteligencia**: APIs ML/LLM integradas a los flujos para clasificación y generación
+- **Integraciones**: CRM, pagos (Stripe/PayPal) y notificaciones (email/SMS)
 
-{/* TODO: insertar diagrama de arquitectura reutilizable aquí (Fase 3, §6.2) */}
+## Decisiones y tradeoffs
 
-### Integraciones en producción
+- **Self-hosted sobre Oracle Cloud en vez de SaaS** → control de datos, costo
+  predecible y libertad para integrar APIs LLM sin límites de plataforma. El tradeoff
+  es asumir la operación (parches, monitoreo, backups) en lugar de delegarla.
+- **n8n como orquestador** → flujos versionables y reutilizables, con lógica custom en
+  Python donde el nodo estándar no alcanza. Evita reescribir integraciones desde cero.
+- **PostgreSQL como única fuente de verdad** → cada ejecución queda registrada para
+  trazabilidad y depuración, a cambio de mantener el esquema y las migraciones a mano.
 
-Los flujos conectan sistemas reales de negocio:
+## Stack
 
-- **CRM**: sincronización de contactos y estados vía API
-- **Pagos**: Stripe y PayPal (cobros, confirmaciones, conciliación)
-- **Notificaciones**: email y SMS disparados por eventos de negocio
+`Oracle Cloud` · `Ubuntu` · `Nginx` · `n8n` · `Python` · `PostgreSQL` · `APIs ML/LLM` · `Stripe` · `PayPal`
 
-## Decisiones técnicas
-
-- **Self-hosted sobre Oracle Cloud en vez de SaaS**: control de datos, costo predecible
-  y libertad para integrar APIs LLM sin límites de plataforma.
-- **n8n como orquestador**: flujos versionables y reutilizables, con lógica custom en
-  Python donde el nodo estándar no alcanza.
-- **PostgreSQL como única fuente de verdad**: cada ejecución de flujo queda registrada
-  para trazabilidad y depuración.
-
-## Impacto real
+## Métricas
 
 - **50+ flujos de automatización** creados para clientes
 - **Más de 70% de reducción** en procesos manuales de los clientes
@@ -56,11 +56,8 @@ Los flujos conectan sistemas reales de negocio:
 {/* TODO: confirmar con Gian métricas adicionales reales (nº clientes activos, uptime,
 volumen de ejecuciones/mes) antes de publicar más cifras. No inventar. */}
 
-## Próximos pasos
+## Enlaces
 
-{/* TODO: confirmar con Gian el roadmap real de Logimatix antes de listar iteraciones futuras. */}
+- **Demo**: [logimatix.shop](https://logimatix.shop)
 
----
-
-**¿Quieres automatizar procesos de tu negocio sobre infraestructura seria?**
-Contáctame y lo diseñamos juntos.
+{/* TODO: añadir repo/video si Gian quiere exponerlos */}

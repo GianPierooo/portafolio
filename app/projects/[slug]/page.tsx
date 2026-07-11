@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { verticals, getProjectBySlugFromData, type Project } from '@/lib/data';
 import ScrollProgress from '@/components/ui/ScrollProgress';
+import ArchitectureDiagram from '@/components/ui/ArchitectureDiagram';
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -67,6 +68,8 @@ const mdxComponents = {
       {...props}
     />
   ),
+  // Diagrama de arquitectura animado, usable desde MDX: <ArchitectureDiagram preset="logimatix" />
+  ArchitectureDiagram,
 };
 
 /** Shared header/actions from project data */

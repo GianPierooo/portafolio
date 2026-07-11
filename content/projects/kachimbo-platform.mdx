@@ -10,41 +10,52 @@ links:
   demo: "https://kchimbo.com"
 ---
 
-## El contexto
+## Problema
 
-Los estudiantes preuniversitarios necesitan **contenido dinámico, simulacros de examen y seguimiento de su progreso** en un solo lugar. Muchas soluciones son fragmentadas o dependen de infraestructura de terceros con costos altos y poco control.
+Los estudiantes preuniversitarios necesitan **contenido dinámico, simulacros de examen
+y seguimiento de su progreso** en un solo lugar. Muchas soluciones son fragmentadas o
+dependen de infraestructura de terceros con costos altos y poco control.
 
-Kchimbo nace como **plataforma EdTech** para ofrecer una experiencia educativa integrada, desplegada en infraestructura propia para tener control total sobre rendimiento, datos y escalabilidad.
+Kchimbo nace como **plataforma EdTech** integrada, desplegada sobre infraestructura
+propia para tener control total de rendimiento, datos y escalabilidad.
 
-## La solución
+## Arquitectura
 
-Diseñé y co-fundé Kchimbo como plataforma inteligente para preuniversitarios:
+El cliente llega por Nginx (TLS), que enruta a la aplicación Next.js corriendo en
+contenedor Docker sobre la VM de Oracle Cloud, con PostgreSQL como base de contenido,
+progreso y usuarios.
 
-- **Contenido dinámico** adaptado al ritmo del estudiante
-- **Simulacros de examen** optimizados para practicar bajo condiciones reales
-- **Tracking de progreso** para que alumnos y docentes vean avances en tiempo real
-- **Arquitectura escalable** desplegada en cloud para soportar picos de uso
+<ArchitectureDiagram preset="kchimbo" />
 
-## Infraestructura y stack
+- **Compute**: VMs con Linux Ubuntu para la aplicación y los servicios
+- **Reverse proxy**: Nginx para TLS y entrega de assets
+- **Contenedores**: Docker para consistencia entre entornos y despliegues repetibles
+- **Web**: Next.js (SSR, rutas dinámicas)
+- **Datos**: PostgreSQL para contenido, tracking de progreso y usuarios
 
-Todo el sistema está desplegado en **Oracle Cloud** con control total sobre el entorno:
+{/* TODO: confirmar con Gian si el frontend Next.js va en Vercel o self-hosted en la VM
+(el diagrama asume self-hosted en Docker, coherente con "infraestructura propia"). */}
 
-- **Servidores**: VMs con Linux Ubuntu para backend y servicios
-- **Web**: Next.js para la aplicación web (SSR, rutas dinámicas, optimización)
-- **Proxy y estático**: Nginx para reverse proxy, SSL y entrega de assets
-- **Contenedores**: Docker para consistencia entre entornos y despliegues
-- **Bases de datos y APIs**: PostgreSQL y APIs propias para contenido y tracking
+## Decisiones y tradeoffs
 
-Esta arquitectura permite iterar rápido, hacer despliegues seguros y escalar cuando crece la base de usuarios.
+- **Infraestructura propia en vez de PaaS** → control total de datos, rendimiento y
+  costos, a cambio de operar la VM (parches, backups, monitoreo).
+- **Docker** → despliegues consistentes y reproducibles; el tradeoff es la capa extra
+  de build/orquestación de contenedores.
+- **Next.js con SSR** → buen SEO y primer render rápido para contenido educativo, a
+  costa de necesitar un runtime Node en el servidor (no solo estáticos).
 
-## Reconocimiento
+## Stack
 
-Kchimbo fue **finalista en Startup UTP**, compitiendo con más de 300 equipos y con un premio de **$10,000 USD** en juego. El proyecto valida la necesidad de herramientas EdTech bien construidas y orientadas a resultados medibles.
+`Oracle Cloud` · `Ubuntu` · `Nginx` · `Docker` · `Next.js` · `PostgreSQL`
 
-## Próximos pasos
+## Métricas
 
-El roadmap incluye ampliar tipos de simulacros, mejorar analytics para instituciones y seguir optimizando la experiencia de estudio en dispositivos móviles.
+- **Finalista Startup UTP** entre **300+ equipos** (premio de $10,000 USD en juego)
 
----
+{/* TODO: confirmar con Gian métricas reales de uso (usuarios activos, simulacros
+completados, uptime) antes de publicarlas. No inventar. */}
 
-**¿Quieres conocer la plataforma?** Visita [kchimbo.com](https://kchimbo.com) para más información.
+## Enlaces
+
+- **Demo**: [kchimbo.com](https://kchimbo.com)
