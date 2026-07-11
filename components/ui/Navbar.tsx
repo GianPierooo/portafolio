@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -85,12 +86,23 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
+            {/* Logo GPC */}
             <Link
               href="/"
-              className="text-xl font-bold text-white hover:text-accent-cloud transition-colors"
+              className="group flex items-center gap-3 text-xl font-bold text-white hover:text-accent-cloud transition-colors"
+              aria-label="Inicio — Gian Piero Cano"
             >
-              <span className="text-accent-cloud">GP</span>C
+              <Image
+                src="/images/logo.png"
+                alt="Logo GPC — Systems Engineer"
+                width={36}
+                height={36}
+                className="rounded-full ring-1 ring-accent-cloud/30 transition-shadow group-hover:ring-accent-cloud/60"
+                priority
+              />
+              <span className="hidden sm:inline">
+                <span className="text-accent-cloud">GP</span>C
+              </span>
             </Link>
 
             {/* Desktop Navigation - Centered */}
@@ -129,6 +141,7 @@ export default function Navbar() {
             </div>
 
             {/* CV Button - Desktop */}
+            {/* TODO: reemplazar /cv.pdf con la versión enfocada en Cloud+IA (lo actualiza Gian) */}
             <a
               href="/cv.pdf"
               download

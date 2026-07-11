@@ -100,7 +100,7 @@ export const projects: Project[] = [
   {
     slug: 'victoriamodas',
     title: 'VictoriaModas',
-    summary: 'E-commerce de moda para mujer. Desarrollo full-stack con IA (Claude), Mercado Pago e inventario.',
+    summary: 'E-commerce de moda para mujer construido con IA (Claude) como copiloto. Mercado Pago e inventario.',
     category: ['automation'],
     techStack: ['Next.js', 'React', 'Node.js', 'Express', 'Mercado Pago'],
     thumbnail: '',

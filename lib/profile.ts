@@ -35,7 +35,7 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    year: 'Jun 2025 — Presente',
+    year: 'Jun 2025',
     role: 'Fundador — Infraestructura de Automatización con IA',
     company: 'Logimatix',
     companyUrl: 'https://logimatix.shop',
@@ -49,7 +49,7 @@ export const experiences: Experience[] = [
     current: true,
   },
   {
-    year: 'Ene 2025 — Presente',
+    year: 'Ene 2025',
     role: 'Co-Fundador — Plataforma EdTech sobre infraestructura propia',
     company: 'Kchimbo',
     companyUrl: 'https://kchimbo.com',
@@ -75,7 +75,7 @@ export const experiences: Experience[] = [
     techStack: ['Godot Engine', 'LibreSprite', 'FL Studio'],
   },
   {
-    year: 'Oct 2023 — Presente',
+    year: 'Oct 2023',
     role: 'Fundador — E-commerce potenciado por IA',
     company: 'OnExotic / VictoriaModas',
     description:
