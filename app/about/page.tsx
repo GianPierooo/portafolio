@@ -2,111 +2,10 @@
 
 import { motion } from 'framer-motion';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
-import { Code2, Server, Brain, Gamepad2, Wrench, Database, Cloud, Zap } from 'lucide-react';
+import { Server, Wrench, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-/**
- * Professional Experience Data - Información real del CV
- */
-const experiences = [
-  {
-    year: 'Jun 2025 — Presente',
-    role: 'Fundador y Desarrollador',
-    company: 'Logimatix',
-    companyUrl: 'https://logimatix.shop',
-    description:
-      'Fundador y desarrollador de plataforma de automatizaciones para negocios, integrando n8n con APIs de CRM, pagos (Stripe/PayPal) y notificaciones (email/SMS).',
-    achievements: [
-      'Creación de 50+ flujos para clientes, reduciendo procesos manuales en más de un 70%.',
-      'Despliegue en Oracle Cloud (Ubuntu VMs, Nginx, PostgreSQL, APIs ML/LLM).',
-    ],
-    techStack: ['n8n', 'Python', 'Oracle Cloud', 'PostgreSQL', 'Stripe', 'PayPal'],
-    current: true,
-  },
-  {
-    year: 'Ene 2025 — Presente',
-    role: 'Co-Fundador',
-    company: 'Kchimbo',
-    companyUrl: 'https://kchimbo.com',
-    description:
-      'Creador de plataforma inteligente para preuniversitarios con contenido dinámico y tracking.',
-    achievements: [
-      'Despliegue de servicios en Oracle Cloud (Ubuntu, Nginx, PostgreSQL).',
-      'Finalista Startup UTP (premio $10,000 USD, 300+ equipos participantes).',
-    ],
-    techStack: ['Oracle Cloud', 'Ubuntu', 'Nginx', 'PostgreSQL', 'Next.js'],
-    current: true,
-  },
-  {
-    year: 'May 2025 — Oct 2025',
-    role: 'Programador',
-    company: 'Sueños Nocturnos / Endless OS Foundation',
-    description:
-      'Desarrollo de StoryQuest integrado en Threadbare (Endless OS Foundation).',
-    achievements: [
-      'Programación de mecánicas en Godot Engine y pruebas internas colaborativas.',
-      'Diseño de personajes y sonido con LibreSprite y FL Studio.',
-    ],
-    techStack: ['Godot Engine', 'LibreSprite', 'FL Studio'],
-  },
-  {
-    year: 'Oct 2023 — Presente',
-    role: 'E-commerce Fundador',
-    company: 'OnExotic / VictoriaModas',
-    description:
-      'Fundador de las marcas OnExotic (moda urbana hombre) y VictoriaModas (moda mujer), con presencia en redes y ventas online.',
-    achievements: [
-      'Desarrollo full-stack asistido por IA (Claude, React/Next.js, Node.js/Express).',
-      'Integración de Mercado Pago, panel de admin e inventario.',
-    ],
-    techStack: ['Next.js', 'React', 'Node.js', 'Express', 'Mercado Pago'],
-    current: true,
-  },
-];
-
-/**
- * Toolkit Data - Technologies and Tools
- */
-const toolkit = [
-  {
-    category: 'Cloud & Infrastructure',
-    icon: Cloud,
-    color: '#06b6d4',
-    tools: ['Oracle Cloud', 'Ubuntu', 'Nginx', 'PostgreSQL', 'Docker', 'Git'],
-  },
-  {
-    category: 'AI & Machine Learning',
-    icon: Brain,
-    color: '#8b5cf6',
-    tools: ['APIs ML/LLM', 'Python', 'FastAPI', 'Claude', 'OpenAI'],
-  },
-  {
-    category: 'Automation',
-    icon: Zap,
-    color: '#8b5cf6',
-    tools: ['n8n', 'Stripe', 'PayPal', 'Mercado Pago', 'Webhooks', 'CRM APIs'],
-  },
-  {
-    category: 'Game Development',
-    icon: Gamepad2,
-    color: '#f59e0b',
-    tools: ['Godot Engine', 'LibreSprite', 'FL Studio', 'GDScript'],
-  },
-  {
-    category: 'Web Development',
-    icon: Code2,
-    color: '#06b6d4',
-    tools: ['Next.js', 'React', 'TypeScript', 'Node.js', 'Express', 'Tailwind CSS'],
-  },
-  {
-    category: 'Backend & Databases',
-    icon: Database,
-    color: '#8b5cf6',
-    tools: ['PostgreSQL', 'REST APIs', 'MongoDB', 'Redis'],
-  },
-];
+import { experiences, toolkit } from '@/lib/profile';
 
 /**
  * About Page
@@ -144,16 +43,19 @@ export default function AboutPage() {
           </h1>
           <div className="prose prose-invert prose-lg max-w-none">
             <p className="text-xl text-slate-300 leading-relaxed mb-4">
-              Soy <span className="text-white font-semibold">Gian Piero Cano</span>,
-              Ingeniero de Sistemas con experiencia en{' '}
-              <span className="text-accent-ai">automatización con IA</span>,{' '}
-              <span className="text-accent-cloud">infraestructura cloud</span> y{' '}
-              <span className="text-accent-automation">desarrollo full-stack</span>.
-              Fundador de Logimatix y Co-Fundador de Kchimbo (EdTech para preuniversitarios).
+              Soy <span className="text-white font-semibold">Gian Piero Cano</span>,{' '}
+              <span className="text-accent-cloud">Cloud Engineer</span> y{' '}
+              <span className="text-accent-ai">arquitecto de soluciones de IA</span>.
+              Pienso en sistemas: diseño la infraestructura, la operación y los componentes
+              inteligentes que hacen que un producto funcione en producción. Fundador de
+              Logimatix (automatización con agentes de IA) y Co-Fundador de Kchimbo
+              (EdTech para preuniversitarios).
             </p>
             <p className="text-lg text-slate-400 leading-relaxed">
-              He creado más de 50 flujos de automatización que reducen procesos manuales en más de 70%,
-              desplegado servicios en Oracle Cloud y desarrollado productos con React, Next.js y Godot Engine.
+              Opero servicios en Oracle Cloud —Ubuntu VMs, Nginx, PostgreSQL, APIs ML/LLM— y he
+              creado más de 50 flujos de automatización que reducen procesos manuales en más de 70%.
+              El desarrollo web (React, Next.js) y de videojuegos (Godot Engine) es la capa de
+              entrega de esos sistemas: la aplicación visible de una base cloud + IA.
               Finalista Startup UTP entre 300+ equipos.
             </p>
           </div>

@@ -17,10 +17,10 @@ const config: Config = {
         },
         // Accent colors for the 4 verticals
         'accent': {
-          cloud: '#06b6d4',    // Cyan - Cloud/Linux
-          ai: '#8b5cf6',       // Violet - AI
-          automation: '#8b5cf6', // Violet - Automation (same as AI)
-          gamedev: '#f59e0b',  // Amber - GameDev
+          cloud: '#06b6d4',      // Cyan - Cloud Architecture
+          ai: '#8b5cf6',         // Violet - Artificial Intelligence
+          automation: '#10b981', // Emerald - Automation (color propio)
+          gamedev: '#f59e0b',    // Amber - Game Development
         },
       },
       fontFamily: {

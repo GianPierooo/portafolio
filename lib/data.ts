@@ -26,36 +26,36 @@ export interface Project {
  * No placeholders - Datos reales del portafolio
  */
 export const projects: Project[] = [
-  // Vertical: Automatización & IA (Logimatix)
+  // Eje central: IA + Cloud (Logimatix) — proyecto insignia
   {
     slug: 'logimatix-ecosystem',
     title: 'Logimatix',
-    summary: 'Infraestructura de automatización para procesos de negocio con agentes IA para optimización operativa.',
-    category: ['automation', 'ai'],
-    techStack: ['n8n', 'Python', 'OpenAI API', 'Webhooks'],
+    summary: 'Infraestructura de automatización con agentes de IA sobre Oracle Cloud. 50+ flujos en producción.',
+    category: ['ai', 'cloud', 'automation'],
+    techStack: ['Oracle Cloud', 'n8n', 'Python', 'PostgreSQL', 'APIs LLM'],
     thumbnail: '/images/projects/logimatix.png',
-    featured: false,
-    date: '2024-12',
+    featured: true,
+    date: '2025-06',
     links: {
       demo: 'https://logimatix.shop',
     },
   },
-  // Vertical: Cloud & Web (Kchimbo)
+  // Eje central: Cloud + IA (Kchimbo)
   {
     slug: 'kachimbo-platform',
     title: 'Kchimbo',
-    summary: 'Plataforma educativa desplegada en infraestructura propia. Simulacros de examen optimizados.',
+    summary: 'Plataforma EdTech desplegada sobre infraestructura cloud propia. Finalista Startup UTP entre 300+ equipos.',
     category: ['cloud', 'ai'],
     techStack: ['Oracle Cloud', 'Linux Ubuntu', 'Nginx', 'Docker', 'Next.js'],
     thumbnail: '/images/projects/kchimbo.png',
-    featured: false,
-    date: '2024-10',
+    featured: true,
+    date: '2025-01',
     links: {
       demo: 'https://kchimbo.com',
     },
   },
 
-  // Vertical: GameDev
+  // Aplicación del eje: GameDev
   {
     slug: 'shadow-games-studio',
     title: 'Shadow Games Studio',
@@ -66,7 +66,7 @@ export const projects: Project[] = [
     featured: false,
     date: '2024-08',
     links: {
-      video: 'https://youtube.com/watch?v=demo',
+      // TODO: confirmar link real del video con Gian (el anterior era un placeholder roto)
     },
   },
   {
@@ -115,25 +115,30 @@ export const projects: Project[] = [
 /**
  * Vertical Labels and Colors
  */
+/**
+ * Orden y jerarquía del mandato de posicionamiento (§1):
+ * Cloud Architecture → Artificial Intelligence → Automation → Game Development.
+ * Automation tiene color propio (emerald) para no diluirse con el violeta de IA.
+ */
 export const verticals = {
   all: {
     label: 'Todos',
     color: 'white',
   },
   cloud: {
-    label: 'Cloud & Infra',
+    label: 'Cloud Architecture',
     color: '#06b6d4', // Cyan
   },
   ai: {
-    label: 'AI Solutions',
+    label: 'Artificial Intelligence',
     color: '#8b5cf6', // Violet
   },
   automation: {
     label: 'Automation',
-    color: '#8b5cf6', // Violet (same as AI)
+    color: '#10b981', // Emerald — color propio, distinto de IA
   },
   gamedev: {
-    label: 'Game Dev',
+    label: 'Game Development',
     color: '#f59e0b', // Amber
   },
 } as const;

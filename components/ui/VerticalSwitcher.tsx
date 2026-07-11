@@ -58,8 +58,10 @@ export default function VerticalSwitcher({
                   boxShadow:
                     tab.id === 'cloud'
                       ? '0 0 20px rgba(6, 182, 212, 0.3)'
-                      : tab.id === 'ai' || tab.id === 'automation'
+                      : tab.id === 'ai'
                       ? '0 0 20px rgba(139, 92, 246, 0.3)'
+                      : tab.id === 'automation'
+                      ? '0 0 20px rgba(16, 185, 129, 0.3)'
                       : tab.id === 'gamedev'
                       ? '0 0 20px rgba(245, 158, 11, 0.3)'
                       : 'none',

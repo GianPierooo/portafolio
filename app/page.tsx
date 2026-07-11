@@ -7,9 +7,10 @@ import ProjectCard from '@/components/ui/ProjectCard';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
 import ContactForm from '@/components/ui/ContactForm';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Linkedin, Mail, ChevronDown, Code2, Server, Brain, Gamepad2, Wrench, Database, Cloud, Zap, MapPin, Calendar, Briefcase, type LucideIcon } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowDown, Download, Server, Wrench, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProjectCategory, getProjectsByCategory } from '@/lib/data';
+import { experiences, toolkit, contactInfo, identity, techMarquee } from '@/lib/profile';
 
 export default function Home() {
   // State for vertical filter
@@ -25,14 +26,14 @@ export default function Home() {
       {/* Hero Section */}
       <section id="hero" className="relative z-10 flex min-h-screen items-center justify-center px-6">
         <div className="max-w-5xl text-center">
-          {/* Animated Greeting */}
+          {/* Animated Greeting — acento de ingeniero en mono */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-4 text-sm font-medium tracking-widest text-accent-cloud uppercase"
+            className="mb-4 font-mono text-sm font-medium tracking-widest text-accent-cloud"
           >
-            Hola Mundo soy
+            {'// hola_mundo, soy'}
           </motion.p>
 
           {/* Main Title */}
@@ -43,19 +44,19 @@ export default function Home() {
             className="mb-6 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight"
           >
             <span className="bg-gradient-to-r from-white via-white to-accent-cloud bg-clip-text text-transparent">
-              Gian Piero Cano
+              {identity.name}
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
+          {/* Rol — mandato de posicionamiento: Cloud + IA, sin ambigüedad */}
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mb-6 text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-300"
           >
-            Ingeniero de Sistemas &{' '}
-            <span className="text-accent-ai">Arquitecto de Soluciones IA</span>
+            <span className="text-accent-cloud">Cloud Engineer</span> &{' '}
+            <span className="text-accent-ai">AI Solutions Architect</span>
           </motion.h2>
 
           {/* Description */}
@@ -65,11 +66,8 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="mx-auto mb-10 max-w-2xl text-lg text-slate-400 leading-relaxed"
           >
-            Diseñando el futuro con{' '}
-            <span className="text-accent-ai font-medium">Inteligencia Artificial</span>,{' '}
-            <span className="text-accent-cloud font-medium">Cloud Computing</span> y{' '}
-            <span className="text-accent-automation font-medium">Automatización</span>.
-            Transformo ideas complejas en sistemas escalables.
+            {identity.tagline} Los productos que ves aquí —automatización,
+            videojuegos, e-commerce— corren sobre esa arquitectura.
           </motion.p>
 
           {/* Social Links */}
@@ -88,12 +86,37 @@ export default function Home() {
             <SocialLink href="mailto:gianpierodaniel@gmail.com" icon={Mail} label="Email" />
           </motion.div>
 
-          {/* CTA Button - Descargar CV */}
+          {/* CTAs: Ver arquitecturas (primario) + Descargar CV (secundario) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.2 }}
+            className="flex flex-wrap items-center justify-center gap-4"
           >
+            <a
+              href="#work"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className={cn(
+                'group relative overflow-hidden rounded-full px-8 py-4',
+                'bg-gradient-to-r from-accent-cloud/20 to-accent-ai/20',
+                'border border-accent-cloud/40 hover:border-accent-cloud/70',
+                'transition-all duration-300',
+                'text-lg font-semibold text-white',
+                'hover:scale-105 active:scale-100',
+                'inline-flex items-center gap-2'
+              )}
+            >
+              <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-cloud to-accent-ai opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-40" />
+              <span className="relative flex items-center gap-2">
+                Ver arquitecturas
+                <ArrowDown className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
+              </span>
+            </a>
+
+            {/* TODO: reemplazar /cv.pdf con la versión enfocada en Cloud+IA (lo actualiza Gian) */}
             <a
               href="/cv.pdf"
               download
@@ -106,14 +129,38 @@ export default function Home() {
                 'inline-flex items-center gap-2'
               )}
             >
-              {/* Glow effect on hover */}
-              <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-cloud to-accent-ai opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-50" />
-              
               <span className="relative flex items-center gap-2">
                 Descargar CV
-                <ChevronDown className="h-5 w-5 animate-bounce" />
+                <Download className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
               </span>
             </a>
+          </motion.div>
+
+          {/* Tech marquee — curada y jerarquizada: cloud/IA primero */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.5 }}
+            className="marquee-container relative mt-14 overflow-hidden"
+            aria-label="Tecnologías principales"
+          >
+            {/* Fades laterales */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-space-950 to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-space-950 to-transparent" />
+
+            <div className="marquee-track flex w-max items-center gap-8">
+              {/* Duplicado para loop continuo */}
+              {[...techMarquee, ...techMarquee].map((tech, i) => (
+                <span
+                  key={`${tech}-${i}`}
+                  className="whitespace-nowrap font-mono text-sm text-slate-500"
+                  aria-hidden={i >= techMarquee.length}
+                >
+                  {tech}
+                  <span className="ml-8 text-slate-700">·</span>
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -198,17 +245,17 @@ export default function Home() {
             </h2>
             <div className="prose prose-invert prose-lg max-w-none">
               <p className="text-xl text-slate-300 leading-relaxed mb-4">
-                Soy <span className="text-white font-semibold">Gian Piero Cano</span>,
-                Ingeniero de Sistemas con experiencia en{' '}
-                <span className="text-accent-ai">automatización con IA</span>,{' '}
-                <span className="text-accent-cloud">infraestructura cloud</span> y{' '}
-                <span className="text-accent-automation">desarrollo full-stack</span>.
-                Fundador de Logimatix (plataforma de automatizaciones para negocios) y Co-Fundador de Kchimbo (EdTech para preuniversitarios).
+                Soy <span className="text-white font-semibold">Gian Piero Cano</span>,{' '}
+                <span className="text-accent-cloud">ingeniero cloud</span> especializado en{' '}
+                <span className="text-accent-ai">sistemas de IA en producción</span>.
+                Arquitecto la infraestructura y los sistemas inteligentes detrás de Logimatix
+                (automatización con agentes de IA) y Kchimbo (EdTech para preuniversitarios).
               </p>
               <p className="text-lg text-slate-400 leading-relaxed">
-                He creado más de 50 flujos de automatización que reducen procesos manuales en más de 70%,
-                desplegado servicios en Oracle Cloud (Ubuntu, Nginx, PostgreSQL, APIs ML/LLM) y desarrollado
-                productos desde cero con React, Next.js y Godot Engine. Finalista Startup UTP entre 300+ equipos.
+                Opero servicios en Oracle Cloud (Ubuntu VMs, Nginx, PostgreSQL, APIs ML/LLM) y he
+                creado más de 50 flujos de automatización que reducen procesos manuales en más de 70%.
+                El desarrollo web y de videojuegos es mi capa de entrega: los productos que construyo
+                —con React, Next.js o Godot— corren sobre esa base. Finalista Startup UTP entre 300+ equipos.
               </p>
             </div>
           </motion.header>
@@ -422,133 +469,6 @@ export default function Home() {
     </main>
   );
 }
-
-// Data for About section - Información real del CV
-const experiences = [
-  {
-    year: 'Jun 2025 — Presente',
-    role: 'Fundador y Desarrollador',
-    company: 'Logimatix',
-    companyUrl: 'https://logimatix.shop',
-    description:
-      'Fundador y desarrollador de plataforma de automatizaciones para negocios, integrando n8n con APIs de CRM, pagos (Stripe/PayPal) y notificaciones (email/SMS).',
-    achievements: [
-      'Creación de 50+ flujos para clientes, reduciendo procesos manuales en más de un 70%.',
-      'Despliegue en Oracle Cloud (Ubuntu VMs, Nginx, PostgreSQL, APIs ML/LLM).',
-    ],
-    techStack: ['n8n', 'Python', 'Oracle Cloud', 'PostgreSQL', 'Stripe', 'PayPal'],
-    current: true,
-  },
-  {
-    year: 'Ene 2025 — Presente',
-    role: 'Co-Fundador',
-    company: 'Kchimbo',
-    companyUrl: 'https://kchimbo.com',
-    description:
-      'Creador de plataforma inteligente para preuniversitarios con contenido dinámico y tracking.',
-    achievements: [
-      'Despliegue de servicios en Oracle Cloud (Ubuntu, Nginx, PostgreSQL).',
-      'Finalista Startup UTP (premio $10,000 USD, 300+ equipos participantes).',
-    ],
-    techStack: ['Oracle Cloud', 'Ubuntu', 'Nginx', 'PostgreSQL', 'Next.js'],
-    current: true,
-  },
-  {
-    year: 'May 2025 — Oct 2025',
-    role: 'Programador',
-    company: 'Sueños Nocturnos / Endless OS Foundation',
-    description:
-      'Desarrollo de StoryQuest integrado en Threadbare (Endless OS Foundation).',
-    achievements: [
-      'Programación de mecánicas en Godot Engine y pruebas internas colaborativas.',
-      'Diseño de personajes y sonido con LibreSprite y FL Studio.',
-    ],
-    techStack: ['Godot Engine', 'LibreSprite', 'FL Studio'],
-  },
-  {
-    year: 'Oct 2023 — Presente',
-    role: 'E-commerce Fundador',
-    company: 'OnExotic / VictoriaModas',
-    description:
-      'Fundador de las marcas de ropa OnExotic (moda urbana para hombre) y VictoriaModas (moda para mujer), con presencia en redes y ventas online.',
-    achievements: [
-      'Desarrollo full-stack asistido por IA (Claude, React/Next.js, Node.js/Express).',
-      'Integración de Mercado Pago, panel de admin e inventario.',
-    ],
-    techStack: ['Next.js', 'React', 'Node.js', 'Express', 'Mercado Pago'],
-    current: true,
-  },
-];
-
-const toolkit = [
-  {
-    category: 'Cloud & Infrastructure',
-    icon: Cloud,
-    color: '#06b6d4',
-    tools: ['Oracle Cloud', 'Ubuntu', 'Nginx', 'PostgreSQL', 'Docker', 'Git'],
-  },
-  {
-    category: 'AI & Machine Learning',
-    icon: Brain,
-    color: '#8b5cf6',
-    tools: ['APIs ML/LLM', 'Python', 'FastAPI', 'Claude', 'OpenAI'],
-  },
-  {
-    category: 'Automation',
-    icon: Zap,
-    color: '#8b5cf6',
-    tools: ['n8n', 'Stripe', 'PayPal', 'Mercado Pago', 'Webhooks', 'CRM APIs'],
-  },
-  {
-    category: 'Game Development',
-    icon: Gamepad2,
-    color: '#f59e0b',
-    tools: ['Godot Engine', 'LibreSprite', 'FL Studio', 'GDScript'],
-  },
-  {
-    category: 'Web Development',
-    icon: Code2,
-    color: '#06b6d4',
-    tools: ['Next.js', 'React', 'TypeScript', 'Node.js', 'Express', 'Tailwind CSS'],
-  },
-  {
-    category: 'Backend & Databases',
-    icon: Database,
-    color: '#8b5cf6',
-    tools: ['PostgreSQL', 'REST APIs', 'MongoDB', 'Redis'],
-  },
-];
-
-const contactInfo = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'gianpierodaniel@gmail.com',
-    href: 'mailto:gianpierodaniel@gmail.com',
-    color: '#06b6d4',
-  },
-  {
-    icon: Linkedin,
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/gianpierooo/',
-    href: 'https://linkedin.com/in/gianpierooo/',
-    color: '#0077b5',
-  },
-  {
-    icon: Github,
-    label: 'GitHub',
-    value: 'github.com/GianPierooo',
-    href: 'https://github.com/GianPierooo',
-    color: '#8b5cf6',
-  },
-  {
-    icon: MapPin,
-    label: 'Ubicación',
-    value: 'Lima, Perú',
-    href: null,
-    color: '#f59e0b',
-  },
-];
 
 /**
  * Social Link Component with glassmorphism and hover effects
