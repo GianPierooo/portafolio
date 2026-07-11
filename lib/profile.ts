@@ -190,6 +190,16 @@ export const identity = {
 } as const;
 
 /**
+ * Métricas reales confirmadas (CV) — para los number counters.
+ * NO añadir cifras sin confirmación de Gian.
+ */
+export const stats = [
+  { value: 50, suffix: '+', label: 'flujos de automatización en producción' },
+  { value: 70, suffix: '%', label: 'reducción de procesos manuales' },
+  { value: 300, suffix: '+', label: 'equipos superados como finalista Startup UTP' },
+] as const;
+
+/**
  * Tech marquee del hero — curada y jerarquizada: cloud/IA primero (§5.1).
  */
 export const techMarquee = [

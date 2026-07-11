@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { springs } from '@/lib/motion';
 
 /**
  * Navigation Links
@@ -120,7 +121,7 @@ export default function Navbar() {
                       'relative text-sm font-medium transition-colors cursor-pointer',
                       isActive
                         ? 'text-white'
-                        : 'text-slate-400 hover:text-white'
+                        : 'link-underline text-slate-400 hover:text-white'
                     )}
                   >
                     {link.label}
@@ -128,11 +129,7 @@ export default function Navbar() {
                       <motion.div
                         layoutId="navbar-indicator"
                         className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-accent-cloud to-accent-ai"
-                        transition={{
-                          type: 'spring',
-                          stiffness: 500,
-                          damping: 30,
-                        }}
+                        transition={springs.pill}
                       />
                     )}
                   </a>

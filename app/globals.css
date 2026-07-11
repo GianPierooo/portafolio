@@ -53,6 +53,67 @@
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
+
+  /*
+   * Fondo espacial estático — fallback del Canvas 3D.
+   * Gradientes de nebulosa + dos capas de estrellas hechas con radial-gradients.
+   * CSS puro: cero JS, cero impacto en LCP.
+   */
+  .static-space {
+    background-color: #020617;
+    background-image:
+      /* nebulosas sutiles con los colores de marca */
+      radial-gradient(ellipse 60% 40% at 70% 20%, rgba(6, 182, 212, 0.07), transparent),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(139, 92, 246, 0.06), transparent),
+      /* capa de estrellas 1 (puntos de 1px) */
+      radial-gradient(1px 1px at 12% 25%, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(1px 1px at 34% 68%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 58% 15%, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(1px 1px at 79% 42%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 91% 78%, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(1px 1px at 45% 89%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 5% 55%, rgba(255, 255, 255, 0.5), transparent),
+      /* capa de estrellas 2 (acentos cyan de 2px) */
+      radial-gradient(2px 2px at 25% 40%, rgba(6, 182, 212, 0.5), transparent),
+      radial-gradient(2px 2px at 67% 60%, rgba(6, 182, 212, 0.4), transparent),
+      radial-gradient(2px 2px at 85% 12%, rgba(6, 182, 212, 0.35), transparent);
+    background-size:
+      100% 100%,
+      100% 100%,
+      520px 520px,
+      480px 480px,
+      560px 560px,
+      500px 500px,
+      540px 540px,
+      460px 460px,
+      510px 510px,
+      620px 620px,
+      680px 680px,
+      590px 590px;
+  }
+
+  /*
+   * Subrayado animado para links de navegación.
+   * Crece de izquierda a derecha en hover; sin transición con reduced-motion.
+   */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: left calc(100% + 2px);
+    transition: background-size 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link-underline {
+      transition: none;
+    }
+  }
 }
 
 @layer utilities {

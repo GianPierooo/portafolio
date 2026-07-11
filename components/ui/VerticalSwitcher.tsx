@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ProjectCategory, verticals } from '@/lib/data';
+import { springs } from '@/lib/motion';
 
 interface VerticalSwitcherProps {
   activeVertical: ProjectCategory | 'all';
@@ -66,11 +67,7 @@ export default function VerticalSwitcher({
                       ? '0 0 20px rgba(245, 158, 11, 0.3)'
                       : 'none',
                 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 500,
-                  damping: 30,
-                }}
+                transition={springs.pill}
               />
             )}
 

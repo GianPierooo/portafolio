@@ -2,10 +2,12 @@
 
 import { motion } from 'framer-motion';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
+import SectionLabel from '@/components/ui/SectionLabel';
 import { Server, Wrench, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { experiences, toolkit } from '@/lib/profile';
+import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
 
 /**
  * About Page
@@ -33,11 +35,12 @@ export default function AboutPage() {
 
         {/* Header */}
         <motion.header
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
           className="mb-16"
         >
+          <SectionLabel className="mb-3" color="#8b5cf6">sobre_mi</SectionLabel>
           <h1 className="text-5xl sm:text-6xl font-bold text-white mb-6">
             Sobre Mí
           </h1>
@@ -63,11 +66,13 @@ export default function AboutPage() {
 
         {/* Experience Section */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
           className="mb-20"
         >
+          <SectionLabel className="mb-3">experiencia</SectionLabel>
           <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
             <Wrench className="h-8 w-8 text-accent-cloud" />
             Experiencia Profesional
@@ -77,25 +82,27 @@ export default function AboutPage() {
 
         {/* Toolkit Section */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
         >
+          <SectionLabel className="mb-3" color="#8b5cf6">stack_tecnologico</SectionLabel>
           <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
             <Server className="h-8 w-8 text-accent-ai" />
             Stack Tecnológico
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {toolkit.map((category, index) => {
+          <motion.div
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {toolkit.map((category) => {
               const Icon = category.icon;
               return (
                 <motion.div
                   key={category.category}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  variants={fadeUp}
                   className={cn(
                     'glass rounded-xl p-6',
                     'border border-slate-800 hover:border-slate-700',
@@ -143,14 +150,15 @@ export default function AboutPage() {
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* CTA Footer */}
         <motion.footer
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
           className="mt-20 text-center"
         >
           <div className="glass rounded-2xl p-8 border border-slate-800">

@@ -6,11 +6,15 @@ import VerticalSwitcher from '@/components/ui/VerticalSwitcher';
 import ProjectCard from '@/components/ui/ProjectCard';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
 import ContactForm from '@/components/ui/ContactForm';
+import Magnetic from '@/components/ui/Magnetic';
+import CountUp from '@/components/ui/CountUp';
+import SectionLabel from '@/components/ui/SectionLabel';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowDown, Download, Server, Wrench, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProjectCategory, getProjectsByCategory } from '@/lib/data';
-import { experiences, toolkit, contactInfo, identity, techMarquee } from '@/lib/profile';
+import { experiences, toolkit, contactInfo, identity, techMarquee, stats } from '@/lib/profile';
+import { fadeUp, fadeIn, fadeLeft, fadeRight, staggerContainer, viewportOnce } from '@/lib/motion';
 
 export default function Home() {
   // State for vertical filter
@@ -25,12 +29,16 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="hero" className="relative z-10 flex min-h-screen items-center justify-center px-6">
-        <div className="max-w-5xl text-center">
+        {/* Orquestación con stagger: los hijos entran en cascada desde tokens */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="max-w-5xl text-center"
+        >
           {/* Animated Greeting — acento de ingeniero en mono */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            variants={fadeUp}
             className="mb-4 font-mono text-sm font-medium tracking-widest text-accent-cloud"
           >
             {'// hola_mundo, soy'}
@@ -38,9 +46,7 @@ export default function Home() {
 
           {/* Main Title */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            variants={fadeUp}
             className="mb-6 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight"
           >
             <span className="bg-gradient-to-r from-white via-white to-accent-cloud bg-clip-text text-transparent">
@@ -50,9 +56,7 @@ export default function Home() {
 
           {/* Rol — mandato de posicionamiento: Cloud + IA, sin ambigüedad */}
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            variants={fadeUp}
             className="mb-6 text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-300"
           >
             <span className="text-accent-cloud">Cloud Engineer</span> &{' '}
@@ -61,9 +65,7 @@ export default function Home() {
 
           {/* Description */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
+            variants={fadeUp}
             className="mx-auto mb-10 max-w-2xl text-lg text-slate-400 leading-relaxed"
           >
             {identity.tagline} Los productos que ves aquí —automatización,
@@ -72,9 +74,7 @@ export default function Home() {
 
           {/* Social Links */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.0 }}
+            variants={fadeUp}
             className="mb-10 flex items-center justify-center gap-6"
           >
             <SocialLink href="https://github.com/GianPierooo" icon={Github} label="GitHub" />
@@ -86,61 +86,59 @@ export default function Home() {
             <SocialLink href="mailto:gianpierodaniel@gmail.com" icon={Mail} label="Email" />
           </motion.div>
 
-          {/* CTAs: Ver arquitecturas (primario) + Descargar CV (secundario) */}
+          {/* CTAs: Ver arquitecturas (primario) + Descargar CV (secundario), con hover magnético */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
+            variants={fadeUp}
             className="flex flex-wrap items-center justify-center gap-4"
           >
-            <a
-              href="#work"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className={cn(
-                'group relative overflow-hidden rounded-full px-8 py-4',
-                'bg-gradient-to-r from-accent-cloud/20 to-accent-ai/20',
-                'border border-accent-cloud/40 hover:border-accent-cloud/70',
-                'transition-all duration-300',
-                'text-lg font-semibold text-white',
-                'hover:scale-105 active:scale-100',
-                'inline-flex items-center gap-2'
-              )}
-            >
-              <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-cloud to-accent-ai opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-40" />
-              <span className="relative flex items-center gap-2">
-                Ver arquitecturas
-                <ArrowDown className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
-              </span>
-            </a>
+            <Magnetic>
+              <a
+                href="#work"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={cn(
+                  'group relative overflow-hidden rounded-full px-8 py-4',
+                  'bg-gradient-to-r from-accent-cloud/20 to-accent-ai/20',
+                  'border border-accent-cloud/40 hover:border-accent-cloud/70',
+                  'transition-colors duration-300',
+                  'text-lg font-semibold text-white',
+                  'inline-flex items-center gap-2'
+                )}
+              >
+                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-cloud to-accent-ai opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-40" />
+                <span className="relative flex items-center gap-2">
+                  Ver arquitecturas
+                  <ArrowDown className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
+                </span>
+              </a>
+            </Magnetic>
 
             {/* TODO: reemplazar /cv.pdf con la versión enfocada en Cloud+IA (lo actualiza Gian) */}
-            <a
-              href="/cv.pdf"
-              download
-              className={cn(
-                'group relative overflow-hidden rounded-full px-8 py-4',
-                'glass hover:bg-white/10',
-                'transition-all duration-300',
-                'text-lg font-semibold text-white',
-                'hover:scale-105 active:scale-100',
-                'inline-flex items-center gap-2'
-              )}
-            >
-              <span className="relative flex items-center gap-2">
-                Descargar CV
-                <Download className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
-              </span>
-            </a>
+            <Magnetic>
+              <a
+                href="/cv.pdf"
+                download
+                className={cn(
+                  'group relative overflow-hidden rounded-full px-8 py-4',
+                  'glass hover:bg-white/10',
+                  'transition-colors duration-300',
+                  'text-lg font-semibold text-white',
+                  'inline-flex items-center gap-2'
+                )}
+              >
+                <span className="relative flex items-center gap-2">
+                  Descargar CV
+                  <Download className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
+                </span>
+              </a>
+            </Magnetic>
           </motion.div>
 
           {/* Tech marquee — curada y jerarquizada: cloud/IA primero */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
+            variants={fadeIn}
             className="marquee-container relative mt-14 overflow-hidden"
             aria-label="Tecnologías principales"
           >
@@ -162,7 +160,7 @@ export default function Home() {
               ))}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Projects Section */}
@@ -170,12 +168,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
             className="text-center mb-16"
           >
+            <SectionLabel className="mb-3">arquitecturas_en_produccion</SectionLabel>
             <h2 className="text-5xl sm:text-6xl font-bold text-white mb-4">
               Proyectos & Soluciones
             </h2>
@@ -187,10 +186,10 @@ export default function Home() {
 
           {/* Vertical Switcher */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
             className="mb-12"
           >
             <VerticalSwitcher
@@ -234,12 +233,13 @@ export default function Home() {
       <section id="about" className="relative z-10 min-h-screen py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.header
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
             className="mb-16"
           >
+            <SectionLabel className="mb-3" color="#8b5cf6">sobre_mi</SectionLabel>
             <h2 className="text-5xl sm:text-6xl font-bold text-white mb-6">
               Sobre Mí
             </h2>
@@ -260,13 +260,38 @@ export default function Home() {
             </div>
           </motion.header>
 
+          {/* Métricas reales con number counters (cuentan al entrar en viewport) */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="mb-20 grid grid-cols-1 sm:grid-cols-3 gap-6"
+          >
+            {stats.map((stat) => (
+              <motion.div
+                key={stat.label}
+                variants={fadeUp}
+                className="glass rounded-xl border border-slate-800 p-6 text-center"
+              >
+                <CountUp
+                  to={stat.value}
+                  suffix={stat.suffix}
+                  className="block font-mono text-4xl sm:text-5xl font-bold text-white"
+                />
+                <p className="mt-2 text-sm text-slate-400">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
           <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
             className="mb-20"
           >
+            <SectionLabel className="mb-3">experiencia</SectionLabel>
             <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
               <Wrench className="h-8 w-8 text-accent-cloud" />
               Experiencia Profesional
@@ -275,26 +300,27 @@ export default function Home() {
           </motion.section>
 
           <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
           >
+            <SectionLabel className="mb-3" color="#8b5cf6">stack_tecnologico</SectionLabel>
             <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
               <Server className="h-8 w-8 text-accent-ai" />
               Stack Tecnológico
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {toolkit.map((category, index) => {
+            <motion.div
+              variants={staggerContainer}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {toolkit.map((category) => {
                 const Icon = category.icon;
                 return (
                   <motion.div
                     key={category.category}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    variants={fadeUp}
                     className={cn(
                       'glass rounded-xl p-6',
                       'border border-slate-800 hover:border-slate-700',
@@ -337,7 +363,7 @@ export default function Home() {
                   </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </motion.section>
         </div>
       </section>
@@ -347,13 +373,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              variants={fadeLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
               className="space-y-8"
             >
               <div>
+                <SectionLabel className="mb-3">contacto</SectionLabel>
                 <div className="h-1 w-16 bg-gradient-to-r from-accent-cloud to-accent-ai mb-6 rounded-full" />
                 <h2 className="text-5xl sm:text-6xl font-bold text-white mb-6">
                   Trabajemos Juntos
@@ -365,17 +392,17 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="space-y-4">
-                {contactInfo.map((item, index) => {
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
+                className="space-y-4"
+              >
+                {contactInfo.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <motion.div
-                      key={item.label}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.1 }}
-                    >
+                    <motion.div key={item.label} variants={fadeUp}>
                       {item.href ? (
                         <a
                           href={item.href}
@@ -429,13 +456,13 @@ export default function Home() {
                     </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
                 className={cn(
                   'flex items-center gap-3 p-4 rounded-xl',
                   'glass border border-accent-ai/30',
@@ -453,10 +480,10 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              variants={fadeRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
               className={cn(
                 'glass rounded-2xl p-8 border border-slate-800'
               )}

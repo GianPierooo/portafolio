@@ -1,24 +1,40 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Play, ArrowRight, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Project, verticals } from '@/lib/data';
+import { durations, easeOut, scaleIn } from '@/lib/motion';
 
 interface ProjectCardProps {
   project: Project;
 }
 
+/** Inclinación máxima del tilt 3D (grados) — sutil por diseño */
+const MAX_TILT = 4;
+
 /**
  * ProjectCard Component - Bento Style
- * Dark card with subtle border that glows on hover based on category
- * Displays project thumbnail, title, description, tech stack pills, and links
+ * Dark card with subtle border that glows on hover based on category.
+ * Micro-interacciones: spotlight que sigue al cursor + tilt 3D sutil.
+ * El tilt vive en un wrapper interno (tiltRef) para no interferir con el
+ * transform que Framer Motion controla en el <motion.article> (layout/scale).
  */
 export default function ProjectCard({ project }: ProjectCardProps) {
   const router = useRouter();
-  
+  const tiltRef = useRef<HTMLDivElement>(null);
+  // Solo desktop con puntero fino y sin reduced-motion (se evalúa una vez)
+  const interactiveRef = useRef(false);
+
+  useEffect(() => {
+    interactiveRef.current =
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
   // Get accent color based on primary category
   const primaryCategory = project.category[0];
   const accentColor = verticals[primaryCategory]?.color || '#ffffff';
@@ -27,32 +43,66 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     router.push(`/projects/${project.slug}`);
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const el = tiltRef.current;
+    if (!el || !interactiveRef.current) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width; // 0..1
+    const py = (e.clientY - rect.top) / rect.height; // 0..1
+    // Spotlight: posición del glow radial (CSS vars, sin re-render)
+    el.style.setProperty('--spot-x', `${px * 100}%`);
+    el.style.setProperty('--spot-y', `${py * 100}%`);
+    // Tilt 3D sutil hacia el cursor
+    const tiltX = (py - 0.5) * -MAX_TILT;
+    const tiltY = (px - 0.5) * MAX_TILT;
+    el.style.transform = `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+  };
+
+  const handleMouseLeave = () => {
+    const el = tiltRef.current;
+    if (!el) return;
+    el.style.transform = '';
+  };
+
   return (
     <motion.article
         onClick={handleCardClick}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         layout
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.3 }}
-        className={cn(
-          'group relative overflow-hidden rounded-2xl',
-          'bg-slate-900/50 backdrop-blur-sm',
-          'border border-slate-800',
-          'hover:border-opacity-100 transition-all duration-300',
-          'hover:shadow-2xl hover:scale-[1.02]',
-          // Aspect ratio for bento grid consistency
-          'aspect-[4/3] flex flex-col cursor-pointer'
-        )}
+        variants={scaleIn}
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        transition={{ duration: durations.fast, ease: easeOut }}
+        className="group aspect-[4/3] cursor-pointer"
         style={{
           ['--accent-color' as string]: accentColor,
         }}
+      >
+      <div
+        ref={tiltRef}
+        className={cn(
+          'relative flex h-full flex-col overflow-hidden rounded-2xl',
+          'bg-slate-900/50 backdrop-blur-sm',
+          'border border-slate-800',
+          'transition-[border-color,box-shadow,transform] duration-300 ease-out',
+          'group-hover:shadow-2xl'
+        )}
       >
       {/* Hover glow effect */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"
         style={{
           boxShadow: `0 0 40px ${accentColor}40, inset 0 0 60px ${accentColor}10`,
+        }}
+      />
+
+      {/* Spotlight que sigue al cursor */}
+      <div
+        className="pointer-events-none absolute inset-0 z-10 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(420px circle at var(--spot-x, 50%) var(--spot-y, 50%), ${accentColor}18, transparent 65%)`,
         }}
       />
 
@@ -149,6 +199,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           border: `1px solid ${accentColor}60`,
         }}
       />
+      </div>
     </motion.article>
   );
 }
