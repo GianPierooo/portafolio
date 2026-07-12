@@ -53,7 +53,7 @@ export default function Footer() {
 
             {/* Copyright */}
             <p className="text-sm text-slate-400 text-center md:text-left">
-              © {currentYear}{' '}
+              © <span suppressHydrationWarning>{currentYear}</span>{' '}
               <span className="text-slate-300 font-medium">Gian Piero Cano</span>.
               Todos los derechos reservados.
             </p>
