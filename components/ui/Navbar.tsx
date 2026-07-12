@@ -5,8 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { OPEN_COMMAND_EVENT } from '@/components/ui/CommandMenu';
+
+/** Abre el command palette (⌘K) vía evento global. */
+function openCommandPalette() {
+  window.dispatchEvent(new Event(OPEN_COMMAND_EVENT));
+}
 import { springs } from '@/lib/motion';
 
 /**
@@ -137,41 +143,75 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* CV Button - Desktop */}
-            {/* TODO: reemplazar /cv.pdf con la versión enfocada en Cloud+IA (lo actualiza Gian) */}
-            <a
-              href="/cv.pdf"
-              download
-              className={cn(
-                'hidden md:flex items-center gap-2 px-6 py-2.5 rounded-lg',
-                'glass hover:bg-white/10',
-                'text-sm font-semibold text-white',
-                'transition-all duration-300',
-                'hover:scale-105 active:scale-100',
-                'border border-accent-cloud/30'
-              )}
-            >
-              <span>Descargar CV</span>
-            </a>
+            {/* Acciones de la derecha */}
+            <div className="flex items-center gap-3">
+              {/* Botón ⌘K — command palette */}
+              <button
+                onClick={openCommandPalette}
+                className={cn(
+                  'group hidden md:flex items-center gap-2 px-3 py-2 rounded-lg',
+                  'bg-slate-900/40 hover:bg-slate-900/70',
+                  'text-sm text-slate-400 hover:text-white',
+                  'border border-slate-800/70 hover:border-slate-700',
+                  'transition-all duration-200'
+                )}
+                aria-label="Abrir paleta de comandos (Ctrl+K o ⌘K)"
+              >
+                <Search className="h-4 w-4" />
+                <kbd className="font-mono text-[10px] text-slate-500 group-hover:text-slate-300">⌘K</kbd>
+              </button>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={cn(
-                'md:hidden p-2 rounded-lg',
-                'text-slate-400 hover:text-white',
-                'bg-slate-900/30 hover:bg-slate-900/50',
-                'border border-slate-800/50',
-                'transition-all duration-200'
-              )}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
+              {/* CV Button - Desktop */}
+              {/* TODO: reemplazar /cv.pdf con la versión enfocada en Cloud+IA (lo actualiza Gian) */}
+              <a
+                href="/cv.pdf"
+                download
+                className={cn(
+                  'hidden md:flex items-center gap-2 px-6 py-2.5 rounded-lg',
+                  'glass hover:bg-white/10',
+                  'text-sm font-semibold text-white',
+                  'transition-all duration-300',
+                  'hover:scale-105 active:scale-100',
+                  'border border-accent-cloud/30'
+                )}
+              >
+                <span>Descargar CV</span>
+              </a>
+
+              {/* Botón ⌘K — móvil (icono) */}
+              <button
+                onClick={openCommandPalette}
+                className={cn(
+                  'md:hidden p-2 rounded-lg',
+                  'text-slate-400 hover:text-white',
+                  'bg-slate-900/30 hover:bg-slate-900/50',
+                  'border border-slate-800/50',
+                  'transition-all duration-200'
+                )}
+                aria-label="Abrir paleta de comandos"
+              >
+                <Search className="h-6 w-6" />
+              </button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className={cn(
+                  'md:hidden p-2 rounded-lg',
+                  'text-slate-400 hover:text-white',
+                  'bg-slate-900/30 hover:bg-slate-900/50',
+                  'border border-slate-800/50',
+                  'transition-all duration-200'
+                )}
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </nav>

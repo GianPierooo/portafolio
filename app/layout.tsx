@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
+import CommandMenu from "@/components/ui/CommandMenu";
 import { identity } from "@/lib/profile";
 import "./globals.css";
 
@@ -101,6 +102,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <Navbar />
+        <CommandMenu />
         <div className="pt-16">
           {children}
         </div>
