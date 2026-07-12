@@ -120,26 +120,34 @@ export const projects: Project[] = [
  * Cloud Architecture → Artificial Intelligence → Automation → Game Development.
  * Automation tiene color propio (emerald) para no diluirse con el violeta de IA.
  */
+// `labelColor` = variante -400 más clara para TEXTO pequeño sobre fondo oscuro,
+// que cumple contraste AA (≥4.5) donde el color base se queda corto (ej. badges).
+// `color` base se sigue usando para fondos, bordes y glows.
 export const verticals = {
   all: {
     label: 'Todos',
     color: 'white',
+    labelColor: '#f8fafc',
   },
   cloud: {
     label: 'Cloud Architecture',
     color: '#06b6d4', // Cyan
+    labelColor: '#22d3ee', // cyan-400
   },
   ai: {
     label: 'Artificial Intelligence',
     color: '#8b5cf6', // Violet
+    labelColor: '#a78bfa', // violet-400 (AA sobre fondo oscuro)
   },
   automation: {
     label: 'Automation',
     color: '#10b981', // Emerald — color propio, distinto de IA
+    labelColor: '#34d399', // emerald-400
   },
   gamedev: {
     label: 'Game Development',
     color: '#f59e0b', // Amber
+    labelColor: '#fbbf24', // amber-400
   },
 } as const;
 

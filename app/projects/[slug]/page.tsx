@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { getProjectBySlug, getAllProjectSlugs } from '@/lib/mdx';
@@ -10,6 +11,36 @@ import ArchitectureDiagram from '@/components/ui/ArchitectureDiagram';
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
+}
+
+/**
+ * Metadata dinámica por proyecto (SEO §5.5): título, descripción y OG propios.
+ * El título usa el template del layout → "<Proyecto> | Gian Piero Cano".
+ */
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const mdx = await getProjectBySlug(slug);
+  const data = getProjectBySlugFromData(slug);
+  const title = mdx?.frontmatter.title ?? data?.title ?? 'Proyecto';
+  const description = mdx?.frontmatter.summary ?? data?.summary ?? '';
+  const url = `/projects/${slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title,
+      description,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  };
 }
 
 /**
@@ -90,7 +121,7 @@ function ProjectHeader({
             className="px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide"
             style={{
               backgroundColor: `${verticals[cat]?.color}20`,
-              color: verticals[cat]?.color,
+              color: verticals[cat]?.labelColor,
               border: `1px solid ${verticals[cat]?.color}40`,
             }}
           >

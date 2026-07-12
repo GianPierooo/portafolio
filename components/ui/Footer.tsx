@@ -52,9 +52,9 @@ export default function Footer() {
             <div className="hidden md:block h-4 w-px bg-slate-700" />
 
             {/* Copyright */}
-            <p className="text-sm text-slate-500 text-center md:text-left">
+            <p className="text-sm text-slate-400 text-center md:text-left">
               © {currentYear}{' '}
-              <span className="text-slate-400 font-medium">Gian Piero Cano</span>.
+              <span className="text-slate-300 font-medium">Gian Piero Cano</span>.
               Todos los derechos reservados.
             </p>
           </div>

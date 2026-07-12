@@ -184,7 +184,7 @@ export default function ArchitectureDiagram({ preset, spec }: ArchitectureDiagra
           })}
         </motion.svg>
       </div>
-      <figcaption className="mt-3 text-center font-mono text-xs text-slate-500">
+      <figcaption className="mt-3 text-center font-mono text-xs text-slate-400">
         {'// '}
         {title}
       </figcaption>

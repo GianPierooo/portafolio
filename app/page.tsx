@@ -39,54 +39,34 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="hero" className="relative z-10 flex min-h-screen items-center justify-center px-6">
-        {/* Orquestación con stagger: los hijos entran en cascada desde tokens */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="max-w-5xl text-center"
-        >
+        {/* Entrada en CSS (hero-rise): pinta el LCP sin esperar la hidratación de JS */}
+        <div className="max-w-5xl text-center">
           {/* Animated Greeting — acento de ingeniero en mono */}
-          <motion.p
-            variants={fadeUp}
-            className="mb-4 font-mono text-sm font-medium tracking-widest text-accent-cloud"
-          >
+          <p className="hero-rise hero-rise-1 mb-4 font-mono text-sm font-medium tracking-widest text-accent-cloud">
             {'// hola_mundo, soy'}
-          </motion.p>
+          </p>
 
-          {/* Main Title */}
-          <motion.h1
-            variants={fadeUp}
-            className="mb-6 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight"
-          >
+          {/* Main Title (elemento LCP) */}
+          <h1 className="hero-rise hero-rise-2 mb-6 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight">
             <span className="bg-gradient-to-r from-white via-white to-accent-cloud bg-clip-text text-transparent">
               {identity.name}
             </span>
-          </motion.h1>
+          </h1>
 
           {/* Rol — mandato de posicionamiento: Cloud + IA, sin ambigüedad */}
-          <motion.h2
-            variants={fadeUp}
-            className="mb-6 text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-300"
-          >
+          <h2 className="hero-rise hero-rise-3 mb-6 text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-300">
             <span className="text-accent-cloud">Cloud Engineer</span> &{' '}
             <span className="text-accent-ai">AI Solutions Architect</span>
-          </motion.h2>
+          </h2>
 
           {/* Description */}
-          <motion.p
-            variants={fadeUp}
-            className="mx-auto mb-10 max-w-2xl text-lg text-slate-400 leading-relaxed"
-          >
+          <p className="hero-rise hero-rise-4 mx-auto mb-10 max-w-2xl text-lg text-slate-400 leading-relaxed">
             {identity.tagline} Los productos que ves aquí —automatización,
             videojuegos, e-commerce— corren sobre esa arquitectura.
-          </motion.p>
+          </p>
 
           {/* Social Links */}
-          <motion.div
-            variants={fadeUp}
-            className="mb-10 flex items-center justify-center gap-6"
-          >
+          <div className="hero-rise hero-rise-5 mb-10 flex items-center justify-center gap-6">
             <SocialLink href="https://github.com/GianPierooo" icon={Github} label="GitHub" />
             <SocialLink
               href="https://linkedin.com/in/gianpierooo/"
@@ -94,13 +74,10 @@ export default function Home() {
               label="LinkedIn"
             />
             <SocialLink href="mailto:gianpierodaniel@gmail.com" icon={Mail} label="Email" />
-          </motion.div>
+          </div>
 
           {/* CTAs: Ver arquitecturas (primario) + Descargar CV (secundario), con hover magnético */}
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-wrap items-center justify-center gap-4"
-          >
+          <div className="hero-rise hero-rise-6 flex flex-wrap items-center justify-center gap-4">
             <Magnetic>
               <a
                 href="#work"
@@ -144,12 +121,11 @@ export default function Home() {
                 </span>
               </a>
             </Magnetic>
-          </motion.div>
+          </div>
 
           {/* Tech marquee — curada y jerarquizada: cloud/IA primero */}
-          <motion.div
-            variants={fadeIn}
-            className="marquee-container relative mt-14 overflow-hidden"
+          <div
+            className="hero-rise hero-rise-7 marquee-container relative mt-14 overflow-hidden"
             aria-label="Tecnologías principales"
           >
             {/* Fades laterales */}
@@ -169,8 +145,8 @@ export default function Home() {
                 </span>
               ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* Projects Section */}
