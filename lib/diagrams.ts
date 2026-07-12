@@ -42,8 +42,9 @@ const SLATE = '#64748b';
 
 /**
  * Logimatix — automatización con agentes de IA sobre Oracle Cloud.
- * Confirmado (CV): Oracle Cloud (Ubuntu VMs, Nginx, PostgreSQL, APIs ML/LLM),
- * n8n self-hosted, integraciones CRM + pagos (Stripe/PayPal) + notificaciones (email/SMS).
+ * Arquitectura confirmada por Gian: n8n + PostgreSQL self-hosted sobre la VM
+ * (sin FastAPI ni base vectorial). Oracle Cloud (Ubuntu VMs, Nginx, PostgreSQL,
+ * APIs ML/LLM), integraciones CRM + pagos (Stripe/PayPal) + notificaciones (email/SMS).
  */
 export const logimatixDiagram: DiagramSpec = {
   title: 'Arquitectura de Logimatix',
@@ -70,10 +71,8 @@ export const logimatixDiagram: DiagramSpec = {
 
 /**
  * Kchimbo — plataforma EdTech sobre infraestructura cloud propia.
- * Confirmado (CV): Oracle Cloud (Ubuntu, Nginx, PostgreSQL, Docker) + Next.js.
- * NOTA: modelado como self-hosted (Next.js en contenedor Docker tras Nginx en la VM),
- * coherente con "infraestructura propia" + Docker. Pendiente confirmar con Gian
- * si el frontend va en Vercel en lugar de la VM.
+ * Arquitectura confirmada: Next.js self-hosted en contenedor Docker tras Nginx,
+ * todo sobre la VM de Oracle Cloud (Ubuntu), con PostgreSQL como base.
  */
 export const kchimboDiagram: DiagramSpec = {
   title: 'Arquitectura de Kchimbo',
@@ -84,7 +83,7 @@ export const kchimboDiagram: DiagramSpec = {
   nodes: [
     { id: 'client', label: 'Cliente', sublabel: 'navegador del estudiante', x: 200, y: 55, color: SLATE, w: 320 },
     { id: 'nginx', label: 'Nginx', sublabel: 'reverse proxy · TLS', x: 200, y: 180, color: CLOUD, w: 240 },
-    { id: 'app', label: 'Next.js', sublabel: 'contenedor Docker', x: 200, y: 300, color: CLOUD, w: 240, assumed: true },
+    { id: 'app', label: 'Next.js', sublabel: 'contenedor Docker', x: 200, y: 300, color: CLOUD, w: 240 },
     { id: 'postgres', label: 'PostgreSQL', sublabel: 'contenido · progreso · usuarios', x: 200, y: 420, color: CLOUD, w: 320 },
   ],
   connections: [
