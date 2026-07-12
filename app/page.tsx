@@ -9,7 +9,17 @@ import ContactForm from '@/components/ui/ContactForm';
 import Magnetic from '@/components/ui/Magnetic';
 import CountUp from '@/components/ui/CountUp';
 import SectionLabel from '@/components/ui/SectionLabel';
+import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Lazy: el widget RAG está bajo el fold y no debe cargar en el bundle del hero.
+const AiChat = dynamic(() => import('@/components/ui/AiChat'), {
+  loading: () => (
+    <div className="mx-auto max-w-3xl">
+      <div className="glass h-72 animate-pulse rounded-2xl border border-slate-800" />
+    </div>
+  ),
+});
 import { Github, Linkedin, Mail, ArrowDown, Download, Server, Wrench, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProjectCategory, getProjectsByCategory } from '@/lib/data';
@@ -226,6 +236,38 @@ export default function Home() {
               </p>
             </motion.div>
           )}
+        </div>
+      </section>
+
+      {/* AI Demo Section — el diferenciador: RAG interactiva en vivo (§6.1) */}
+      <section id="ai" className="relative z-10 py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="text-center mb-12"
+          >
+            <SectionLabel className="mb-3" color="#8b5cf6">ask_my_ai</SectionLabel>
+            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-4">
+              IA en vivo, no en un slide
+            </h2>
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+              Un asistente RAG que responde sobre mi perfil recuperando fragmentos reales,
+              armando el contexto y generando la respuesta. La misma clase de sistema que
+              despliego para clientes.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+          >
+            <AiChat />
+          </motion.div>
         </div>
       </section>
 
