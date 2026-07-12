@@ -190,14 +190,47 @@ export const identity = {
 } as const;
 
 /**
- * Métricas reales confirmadas (CV) — para los number counters.
+ * Métricas reales confirmadas (CV) — para los number counters / panel de métricas.
  * NO añadir cifras sin confirmación de Gian.
+ * `bar` (0-100) solo para métricas que SON un porcentaje real; en las de conteo
+ * se omite para no insinuar un ratio inventado.
  */
-export const stats = [
-  { value: 50, suffix: '+', label: 'flujos de automatización en producción' },
-  { value: 70, suffix: '%', label: 'reducción de procesos manuales' },
-  { value: 300, suffix: '+', label: 'equipos superados como finalista Startup UTP' },
-] as const;
+export interface Stat {
+  key: string; // etiqueta mono estilo dashboard
+  value: number;
+  suffix: string;
+  label: string;
+  color: string;
+  bar?: number; // relleno del progress bar, solo para porcentajes reales
+}
+
+export const stats: Stat[] = [
+  {
+    key: 'flujos_en_produccion',
+    value: 50,
+    suffix: '+',
+    label: 'flujos de automatización en producción',
+    color: '#06b6d4', // cloud
+  },
+  {
+    key: 'reduccion_procesos',
+    value: 70,
+    suffix: '%',
+    label: 'reducción de procesos manuales',
+    color: '#10b981', // automation
+    bar: 70,
+  },
+  {
+    key: 'ranking_startup_utp',
+    value: 300,
+    suffix: '+',
+    label: 'equipos superados como finalista Startup UTP',
+    color: '#8b5cf6', // ai
+  },
+];
+
+// TODO (Gian): si hay más métricas reales confirmadas (uptime, años en cloud,
+// nº de clientes activos, ejecuciones/mes), añádelas aquí para enriquecer el panel.
 
 /**
  * Tech marquee del hero — curada y jerarquizada: cloud/IA primero (§5.1).

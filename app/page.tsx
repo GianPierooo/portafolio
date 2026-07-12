@@ -7,7 +7,7 @@ import ProjectCard from '@/components/ui/ProjectCard';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
 import ContactForm from '@/components/ui/ContactForm';
 import Magnetic from '@/components/ui/Magnetic';
-import CountUp from '@/components/ui/CountUp';
+import StatsPanel from '@/components/ui/StatsPanel';
 import SectionLabel from '@/components/ui/SectionLabel';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,7 +23,7 @@ const AiChat = dynamic(() => import('@/components/ui/AiChat'), {
 import { Github, Linkedin, Mail, ArrowDown, Download, Server, Wrench, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProjectCategory, getProjectsByCategory } from '@/lib/data';
-import { experiences, toolkit, contactInfo, identity, techMarquee, stats } from '@/lib/profile';
+import { experiences, toolkit, contactInfo, identity, techMarquee } from '@/lib/profile';
 import { fadeUp, fadeIn, fadeLeft, fadeRight, staggerContainer, viewportOnce } from '@/lib/motion';
 
 export default function Home() {
@@ -302,28 +302,15 @@ export default function Home() {
             </div>
           </motion.header>
 
-          {/* Métricas reales con number counters (cuentan al entrar en viewport) */}
+          {/* Panel de métricas tipo observabilidad — solo cifras reales confirmadas */}
           <motion.div
-            variants={staggerContainer}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="mb-20 grid grid-cols-1 sm:grid-cols-3 gap-6"
+            className="mb-20"
           >
-            {stats.map((stat) => (
-              <motion.div
-                key={stat.label}
-                variants={fadeUp}
-                className="glass rounded-xl border border-slate-800 p-6 text-center"
-              >
-                <CountUp
-                  to={stat.value}
-                  suffix={stat.suffix}
-                  className="block font-mono text-4xl sm:text-5xl font-bold text-white"
-                />
-                <p className="mt-2 text-sm text-slate-400">{stat.label}</p>
-              </motion.div>
-            ))}
+            <StatsPanel />
           </motion.div>
 
           <motion.section
