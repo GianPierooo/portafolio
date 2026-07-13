@@ -4,9 +4,9 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
 /**
- * Fallback estático ligero: gradientes radiales + campo de estrellas en CSS puro.
- * Se usa mientras carga el Canvas, con prefers-reduced-motion y en móvil/touch.
- * Cero JS de render, cero impacto en LCP.
+ * Fallback estático ligero: gradientes de nebulosa + estrellas en CSS puro.
+ * Se usa SOLO bajo prefers-reduced-motion (accesibilidad) y como loading del
+ * Canvas lazy. Cero JS de render, cero impacto en LCP.
  */
 function StaticSpace() {
   return <div className="static-space fixed inset-0 z-0" aria-hidden="true" />;
@@ -21,35 +21,38 @@ const SpaceScene = dynamic(() => import('./SpaceScene'), {
   loading: () => <StaticSpace />,
 });
 
+type Mode = 'static' | 'full' | 'lite';
+
 /**
  * SpaceBackground — decide qué fondo renderizar:
- * - prefers-reduced-motion → estático (accesibilidad)
- * - touch/móvil (hover: none o viewport < 768px) → estático (rendimiento)
- * - desktop → escena 3D lazy-loaded
- * La decisión se toma en el cliente tras el mount; hasta entonces se muestra
- * el estático, que también es el estado que ve el servidor (sin hydration mismatch).
+ * - prefers-reduced-motion → estático (única razón para NO animar).
+ * - móvil / viewport pequeño → escena 3D "lite" (menos partículas, DPR más bajo),
+ *   pero ANIMADA.
+ * - resto → escena 3D completa e inmersiva.
+ * La decisión se toma en el cliente tras el mount; el SSR muestra el estático
+ * (que es también el loading del Canvas) → sin hydration mismatch.
  */
 export default function SpaceBackground() {
-  const [show3D, setShow3D] = useState(false);
+  const [mode, setMode] = useState<Mode>('static');
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const touchDevice = window.matchMedia('(hover: none)');
-    const smallViewport = window.matchMedia('(max-width: 767px)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const small = window.matchMedia('(max-width: 767px)');
 
     const decide = () => {
-      setShow3D(!reducedMotion.matches && !touchDevice.matches && !smallViewport.matches);
+      if (reduced.matches) setMode('static');
+      else setMode(small.matches ? 'lite' : 'full');
     };
 
     decide();
-    // Reaccionar si el usuario cambia la preferencia o rota/redimensiona
-    reducedMotion.addEventListener('change', decide);
-    smallViewport.addEventListener('change', decide);
+    reduced.addEventListener('change', decide);
+    small.addEventListener('change', decide);
     return () => {
-      reducedMotion.removeEventListener('change', decide);
-      smallViewport.removeEventListener('change', decide);
+      reduced.removeEventListener('change', decide);
+      small.removeEventListener('change', decide);
     };
   }, []);
 
-  return show3D ? <SpaceScene /> : <StaticSpace />;
+  if (mode === 'static') return <StaticSpace />;
+  return <SpaceScene lite={mode === 'lite'} />;
 }
