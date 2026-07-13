@@ -2,18 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { springs } from '@/lib/motion';
 import { OPEN_COMMAND_EVENT } from '@/components/ui/CommandMenu';
 
-/** Abre el command palette (⌘K) vía evento global. */
+/** Abre el command palette vía evento global (también se abre con Ctrl/⌘+K). */
 function openCommandPalette() {
   window.dispatchEvent(new Event(OPEN_COMMAND_EVENT));
 }
-import { springs } from '@/lib/motion';
 
 /**
  * Navigation Links
@@ -93,22 +92,32 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo GPC */}
+            {/* Logo GPC — texto tallado (letterpress + degradado de marca) */}
             <Link
               href="/"
-              className="group flex items-center gap-3 text-xl font-bold text-white hover:text-accent-cloud transition-colors"
+              className="group relative"
               aria-label="Inicio — Gian Piero Cano"
             >
-              <Image
-                src="/images/logo.png"
-                alt="Logo GPC — Systems Engineer"
-                width={36}
-                height={36}
-                className="rounded-full ring-1 ring-accent-cloud/30 transition-shadow group-hover:ring-accent-cloud/60"
-                priority
-              />
-              <span className="hidden sm:inline">
-                <span className="text-accent-cloud">GP</span>C
+              <span
+                className={cn(
+                  'select-none text-2xl sm:text-3xl font-extrabold tracking-tight',
+                  'bg-gradient-to-br from-white via-accent-cloud to-accent-ai bg-clip-text text-transparent',
+                  'transition-[filter] duration-300'
+                )}
+                style={{
+                  // Relieve tallado: highlight superior + sombra inferior en capas
+                  filter:
+                    'drop-shadow(0 -1px 0 rgba(255,255,255,0.25)) drop-shadow(0 2px 2px rgba(2,6,23,0.85)) drop-shadow(0 3px 6px rgba(0,0,0,0.5))',
+                }}
+              >
+                GPC
+              </span>
+              {/* Glow de marca al hover */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 flex items-center text-2xl sm:text-3xl font-extrabold tracking-tight text-accent-cloud opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-40"
+              >
+                GPC
               </span>
             </Link>
 
@@ -145,20 +154,20 @@ export default function Navbar() {
 
             {/* Acciones de la derecha */}
             <div className="flex items-center gap-3">
-              {/* Botón ⌘K — command palette */}
+              {/* Búsqueda — abre el command palette (lupa, sin símbolo de OS) */}
               <button
                 onClick={openCommandPalette}
                 className={cn(
-                  'group hidden md:flex items-center gap-2 px-3 py-2 rounded-lg',
+                  'hidden md:flex items-center justify-center h-10 w-10 rounded-lg',
                   'bg-slate-900/40 hover:bg-slate-900/70',
-                  'text-sm text-slate-400 hover:text-white',
+                  'text-slate-400 hover:text-white',
                   'border border-slate-800/70 hover:border-slate-700',
-                  'transition-all duration-200'
+                  'transition-all duration-200 hover:scale-105 active:scale-100'
                 )}
-                aria-label="Abrir paleta de comandos (Ctrl+K o ⌘K)"
+                aria-label="Buscar (abrir paleta de comandos)"
+                title="Buscar"
               >
-                <Search className="h-4 w-4" />
-                <kbd className="font-mono text-[10px] text-slate-500 group-hover:text-slate-300">⌘K</kbd>
+                <Search className="h-5 w-5" />
               </button>
 
               {/* CV Button - Desktop */}
