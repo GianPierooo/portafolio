@@ -1,5 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 import SpaceBackground from '@/components/ui/SpaceBackground';
-import SocialLink from '@/components/ui/SocialLink';
+import HeroPhoto from '@/components/ui/HeroPhoto';
 import Magnetic from '@/components/ui/Magnetic';
 import Reveal from '@/components/ui/Reveal';
 import ProjectsExplorer from '@/components/ui/ProjectsExplorer';
@@ -10,113 +12,100 @@ import ToolkitGrid from '@/components/ui/ToolkitGrid';
 import ContactInfoList from '@/components/ui/ContactInfoList';
 import ContactForm from '@/components/ui/ContactForm';
 import SectionLabel from '@/components/ui/SectionLabel';
-import { ArrowDown, Download, Server, Wrench } from 'lucide-react';
+import { ArrowRight, Server, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { experiences, identity, techMarquee } from '@/lib/profile';
 
 /**
- * Home — SERVER COMPONENT (Fase 5.1).
- * El contenido estático (texto, headings, marquee) se renderiza en el servidor.
- * Solo se hidratan como islas cliente las piezas interactivas/animadas:
- * fondo 3D, hover magnético, social links, reveals on-scroll, filtro de proyectos,
- * demo RAG, panel de métricas, timeline, toolkit y formulario de contacto.
+ * Home — SERVER COMPONENT.
+ * Se comprueba en build si existe la foto del hero (public/gian.jpg): si está,
+ * se muestra; si no, un placeholder. Se reemplaza solo al subir el archivo.
  */
+
 export default function Home() {
+  const hasPhoto = fs.existsSync(path.join(process.cwd(), 'public', 'gian.jpg'));
+
   return (
     <main className="relative overflow-hidden">
       {/* 3D Space Background (isla cliente, lazy + fallback estático) */}
       <SpaceBackground />
 
-      {/* Hero Section — server-render con entrada CSS (hero-rise); LCP sin gate de JS */}
-      <section id="hero" className="relative z-10 flex min-h-screen items-center justify-center px-6">
-        <div className="max-w-5xl text-center">
-          <p className="hero-rise hero-rise-1 mb-4 font-mono text-sm font-medium tracking-widest text-accent-cloud">
-            {'// hola_mundo, soy'}
-          </p>
+      {/* Hero — editorial 2 columnas (foto + texto). Entrada CSS (hero-rise): el
+          H1 (LCP) no depende de JS. Contenedor ancho (usa el ancho real). */}
+      <section
+        id="hero"
+        className="relative z-10 flex min-h-screen items-center px-6 py-28 sm:px-10 lg:px-16"
+      >
+        <div className="mx-auto grid w-full max-w-[1600px] items-center gap-12 lg:grid-cols-2 lg:gap-20">
+          {/* Foto (desktop: izquierda; móvil: arriba) */}
+          <div className="hero-rise hero-rise-1">
+            <HeroPhoto hasPhoto={hasPhoto} />
+          </div>
 
-          {/* Main Title (elemento LCP) */}
-          <h1 className="hero-rise hero-rise-2 mb-6 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-white via-white to-accent-cloud bg-clip-text text-transparent">
+          {/* Texto (desktop: derecha; móvil: abajo) */}
+          <div className="text-center lg:text-left">
+            <p className="hero-rise hero-rise-2 mb-4 font-mono text-sm font-medium tracking-widest text-accent-cloud">
+              {'// hola_mundo, soy'}
+            </p>
+
+            {/* Nombre — elemento LCP: relieve via clase + entrada CSS (sin framer) */}
+            <h1 className="hero-rise hero-rise-3 raised-title mb-5 text-6xl sm:text-7xl lg:text-8xl">
               {identity.name}
-            </span>
-          </h1>
+            </h1>
 
-          <h2 className="hero-rise hero-rise-3 mb-6 text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-300">
-            <span className="text-accent-cloud">Cloud Engineer</span> &{' '}
-            <span className="text-accent-ai">AI Solutions Architect</span>
-          </h2>
+            {/* Rol en una línea */}
+            <p className="hero-rise hero-rise-4 mb-5 text-2xl font-semibold text-slate-300 lg:text-[1.75rem]">
+              <span className="text-accent-cloud">Cloud Engineer</span> &{' '}
+              <span className="text-accent-ai">AI Solutions Architect</span>
+            </p>
 
-          <p className="hero-rise hero-rise-4 mx-auto mb-10 max-w-2xl text-lg text-slate-400 leading-relaxed">
-            {identity.tagline} Los productos que ves aquí —automatización,
-            videojuegos, e-commerce— corren sobre esa arquitectura.
-          </p>
+            {/* Tagline en una frase */}
+            <p className="hero-rise hero-rise-5 mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-400 lg:mx-0 lg:text-xl">
+              {identity.tagline}
+            </p>
 
-          {/* Social Links (islas cliente con hover magnético) */}
-          <div className="hero-rise hero-rise-5 mb-10 flex items-center justify-center gap-6">
-            <SocialLink href="https://github.com/GianPierooo" type="github" label="GitHub" />
-            <SocialLink href="https://linkedin.com/in/gianpierooo/" type="linkedin" label="LinkedIn" />
-            <SocialLink href="mailto:gianpierodaniel@gmail.com" type="email" label="Email" />
-          </div>
-
-          {/* CTAs con hover magnético; scroll nativo (scroll-behavior: smooth) */}
-          <div className="hero-rise hero-rise-6 flex flex-wrap items-center justify-center gap-4">
-            <Magnetic>
-              <a
-                href="#work"
-                className={cn(
-                  'group relative overflow-hidden rounded-full px-8 py-4',
-                  'bg-gradient-to-r from-accent-cloud/20 to-accent-ai/20',
-                  'border border-accent-cloud/40 hover:border-accent-cloud/70',
-                  'transition-colors duration-300',
-                  'text-lg font-semibold text-white',
-                  'inline-flex items-center gap-2'
-                )}
-              >
-                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-cloud to-accent-ai opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-40" />
-                <span className="relative flex items-center gap-2">
-                  Ver arquitecturas
-                  <ArrowDown className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
-                </span>
-              </a>
-            </Magnetic>
-
-            {/* TODO: reemplazar /cv.pdf con la versión enfocada en Cloud+IA (lo actualiza Gian) */}
-            <Magnetic>
-              <a
-                href="/cv.pdf"
-                download
-                className={cn(
-                  'group relative overflow-hidden rounded-full px-8 py-4',
-                  'glass hover:bg-white/10',
-                  'transition-colors duration-300',
-                  'text-lg font-semibold text-white',
-                  'inline-flex items-center gap-2'
-                )}
-              >
-                <span className="relative flex items-center gap-2">
-                  Descargar CV
-                  <Download className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
-                </span>
-              </a>
-            </Magnetic>
-          </div>
-
-          {/* Tech marquee — estático, animación CSS (curada: cloud/IA primero) */}
-          <div className="hero-rise hero-rise-7 marquee-container relative mt-14 overflow-hidden" aria-label="Tecnologías principales">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-space-950 to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-space-950 to-transparent" />
-            <div className="marquee-track flex w-max items-center gap-8">
-              {[...techMarquee, ...techMarquee].map((tech, i) => (
-                <span
-                  key={`${tech}-${i}`}
-                  className="whitespace-nowrap font-mono text-sm text-slate-400"
-                  aria-hidden={i >= techMarquee.length}
+            {/* Un solo CTA */}
+            <div className="hero-rise hero-rise-6 flex justify-center lg:justify-start">
+              <Magnetic>
+                <a
+                  href="#work"
+                  className={cn(
+                    'group relative overflow-hidden rounded-full px-9 py-4',
+                    'bg-gradient-to-r from-accent-cloud/20 to-accent-ai/20',
+                    'border border-accent-cloud/40 hover:border-accent-cloud/70',
+                    'text-lg font-semibold text-white transition-colors duration-300',
+                    'inline-flex items-center gap-2'
+                  )}
                 >
-                  {tech}
-                  <span className="ml-8 text-slate-700">·</span>
-                </span>
-              ))}
+                  <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-cloud to-accent-ai opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-40" />
+                  <span className="relative flex items-center gap-2">
+                    Ver trabajo
+                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </a>
+              </Magnetic>
             </div>
+          </div>
+        </div>
+
+        {/* Tech marquee — full-width al pie del hero (curada: cloud/IA primero) */}
+        <div
+          className="hero-rise hero-rise-7 marquee-container absolute inset-x-0 bottom-8 overflow-hidden"
+          aria-label="Tecnologías principales"
+        >
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-space-950 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-space-950 to-transparent" />
+          <div className="marquee-track flex w-max items-center gap-8 px-6">
+            {[...techMarquee, ...techMarquee].map((tech, i) => (
+              <span
+                key={`${tech}-${i}`}
+                className="whitespace-nowrap font-mono text-sm text-slate-400"
+                aria-hidden={i >= techMarquee.length}
+              >
+                {tech}
+                <span className="ml-8 text-slate-700">·</span>
+              </span>
+            ))}
           </div>
         </div>
       </section>
