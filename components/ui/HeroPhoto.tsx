@@ -6,7 +6,13 @@ import { User } from 'lucide-react';
  * Si existe public/gian.jpg (comprobado en build) muestra la imagen; si no, un
  * placeholder claro "foto pendiente". Se reemplaza solo al subir el archivo.
  */
-export default function HeroPhoto({ hasPhoto }: { hasPhoto: boolean }) {
+export default function HeroPhoto({
+  hasPhoto,
+  priority = false,
+}: {
+  hasPhoto: boolean;
+  priority?: boolean;
+}) {
   return (
     <div className="relative mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[440px]">
       {/* Glow de marca detrás (profundidad) */}
@@ -27,7 +33,7 @@ export default function HeroPhoto({ hasPhoto }: { hasPhoto: boolean }) {
             src="/gian.jpg"
             alt="Gian Piero Cano"
             fill
-            priority
+            priority={priority}
             className="object-cover"
             sizes="(max-width: 1024px) 360px, 440px"
           />

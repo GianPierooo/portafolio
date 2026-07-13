@@ -6,12 +6,12 @@ import Magnetic from '@/components/ui/Magnetic';
 import Reveal from '@/components/ui/Reveal';
 import ProjectsExplorer from '@/components/ui/ProjectsExplorer';
 import AiChatLazy from '@/components/ui/AiChatLazy';
-import StatsPanel from '@/components/ui/StatsPanel';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
 import ToolkitGrid from '@/components/ui/ToolkitGrid';
 import ContactInfoList from '@/components/ui/ContactInfoList';
 import ContactForm from '@/components/ui/ContactForm';
 import SectionLabel from '@/components/ui/SectionLabel';
+import RaisedTitle from '@/components/ui/RaisedTitle';
 import { ArrowRight, Server, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { experiences, identity, techMarquee } from '@/lib/profile';
@@ -39,7 +39,7 @@ export default function Home() {
         <div className="mx-auto grid w-full max-w-[1600px] items-center gap-12 lg:grid-cols-2 lg:gap-20">
           {/* Foto (desktop: izquierda; móvil: arriba) */}
           <div className="hero-rise hero-rise-1">
-            <HeroPhoto hasPhoto={hasPhoto} />
+            <HeroPhoto hasPhoto={hasPhoto} priority />
           </div>
 
           {/* Texto (desktop: derecha; móvil: abajo) */}
@@ -146,49 +146,55 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="relative z-10 min-h-screen py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <Reveal as="header" className="mb-16">
-            <SectionLabel className="mb-3" color="#8b5cf6">sobre_mi</SectionLabel>
-            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-6">Sobre Mí</h2>
-            <div className="prose prose-invert prose-lg max-w-none">
-              <p className="text-xl text-slate-300 leading-relaxed mb-4">
-                Soy <span className="text-white font-semibold">Gian Piero Cano</span>,{' '}
-                <span className="text-accent-cloud">ingeniero cloud</span> especializado en{' '}
-                <span className="text-accent-ai">sistemas de IA en producción</span>.
-                Arquitecto la infraestructura y los sistemas inteligentes detrás de Logimatix
-                (automatización con agentes de IA) y Kchimbo (EdTech para preuniversitarios).
-              </p>
-              <p className="text-lg text-slate-400 leading-relaxed">
-                Opero servicios en Oracle Cloud (Ubuntu VMs, Nginx, PostgreSQL, APIs ML/LLM) y he
-                creado más de 50 flujos de automatización que reducen procesos manuales en más de 70%.
-                El desarrollo web y de videojuegos es mi capa de entrega: los productos que construyo
-                —con React, Next.js o Godot— corren sobre esa base. Finalista Startup UTP entre 300+ equipos.
-              </p>
+      {/* About Section — editorial 2 columnas (foto + texto corto), ancho real */}
+      <section id="about" className="relative z-10 min-h-screen py-28 px-6 sm:px-10 lg:px-16">
+        <div className="mx-auto w-full max-w-[1600px]">
+          {/* Sobre Mí: foto izq (desktop) / arriba (móvil) + texto corto der */}
+          <div className="mb-28 grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+            <Reveal variant="left">
+              <HeroPhoto hasPhoto={hasPhoto} />
+            </Reveal>
+
+            <div className="text-center lg:text-left">
+              <SectionLabel className="mb-3" color="#8b5cf6">sobre_mi</SectionLabel>
+              <RaisedTitle as="h2" className="mb-8 text-5xl sm:text-6xl lg:text-7xl">
+                Sobre Mí
+              </RaisedTitle>
+              <Reveal variant="up" className="space-y-5">
+                <p className="text-2xl font-semibold leading-snug text-slate-200 lg:text-3xl">
+                  Ingeniero cloud que construye{' '}
+                  <span className="text-accent-ai">sistemas de IA en producción</span>.
+                </p>
+                <p className="mx-auto max-w-xl text-lg leading-relaxed text-slate-400 lg:mx-0">
+                  Diseño la infraestructura y los agentes inteligentes detrás de{' '}
+                  <span className="text-accent-cloud">Logimatix</span> y{' '}
+                  <span className="text-accent-cloud">Kchimbo</span>. El desarrollo web y de
+                  videojuegos es solo la capa de entrega.
+                </p>
+              </Reveal>
             </div>
-          </Reveal>
+          </div>
 
-          {/* Panel de métricas tipo observabilidad — isla cliente */}
-          <Reveal className="mb-20">
-            <StatsPanel />
-          </Reveal>
-
-          <Reveal as="section" className="mb-20">
+          {/* Experiencia (título con relieve) */}
+          <Reveal as="section" className="mb-28">
             <SectionLabel className="mb-3">experiencia</SectionLabel>
-            <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
-              <Wrench className="h-8 w-8 text-accent-cloud" />
-              Experiencia Profesional
-            </h3>
+            <div className="mb-10 flex items-center gap-3">
+              <Wrench className="h-8 w-8 shrink-0 text-accent-cloud" />
+              <RaisedTitle as="h3" className="text-3xl sm:text-4xl">
+                Experiencia Profesional
+              </RaisedTitle>
+            </div>
             <ExperienceTimeline experiences={experiences} />
           </Reveal>
 
           <Reveal as="section">
             <SectionLabel className="mb-3" color="#8b5cf6">stack_tecnologico</SectionLabel>
-            <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
-              <Server className="h-8 w-8 text-accent-ai" />
-              Stack Tecnológico
-            </h3>
+            <div className="mb-10 flex items-center gap-3">
+              <Server className="h-8 w-8 shrink-0 text-accent-ai" />
+              <RaisedTitle as="h3" className="text-3xl sm:text-4xl">
+                Stack Tecnológico
+              </RaisedTitle>
+            </div>
             {/* Isla cliente: grid con stagger */}
             <ToolkitGrid />
           </Reveal>
