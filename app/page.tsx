@@ -1,47 +1,35 @@
-'use client';
-
-import { useState } from 'react';
 import SpaceBackground from '@/components/ui/SpaceBackground';
-import VerticalSwitcher from '@/components/ui/VerticalSwitcher';
-import ProjectCard from '@/components/ui/ProjectCard';
-import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
-import ContactForm from '@/components/ui/ContactForm';
+import SocialLink from '@/components/ui/SocialLink';
 import Magnetic from '@/components/ui/Magnetic';
+import Reveal from '@/components/ui/Reveal';
+import ProjectsExplorer from '@/components/ui/ProjectsExplorer';
+import AiChatLazy from '@/components/ui/AiChatLazy';
 import StatsPanel from '@/components/ui/StatsPanel';
+import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
+import ToolkitGrid from '@/components/ui/ToolkitGrid';
+import ContactInfoList from '@/components/ui/ContactInfoList';
+import ContactForm from '@/components/ui/ContactForm';
 import SectionLabel from '@/components/ui/SectionLabel';
-import dynamic from 'next/dynamic';
-import { motion, AnimatePresence } from 'framer-motion';
-
-// Lazy: el widget RAG está bajo el fold y no debe cargar en el bundle del hero.
-const AiChat = dynamic(() => import('@/components/ui/AiChat'), {
-  loading: () => (
-    <div className="mx-auto max-w-3xl">
-      <div className="glass h-72 animate-pulse rounded-2xl border border-slate-800" />
-    </div>
-  ),
-});
-import { Github, Linkedin, Mail, ArrowDown, Download, Server, Wrench, type LucideIcon } from 'lucide-react';
+import { ArrowDown, Download, Server, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ProjectCategory, getProjectsByCategory } from '@/lib/data';
-import { experiences, toolkit, contactInfo, identity, techMarquee } from '@/lib/profile';
-import { fadeUp, fadeIn, fadeLeft, fadeRight, staggerContainer, viewportOnce } from '@/lib/motion';
+import { experiences, identity, techMarquee } from '@/lib/profile';
 
+/**
+ * Home — SERVER COMPONENT (Fase 5.1).
+ * El contenido estático (texto, headings, marquee) se renderiza en el servidor.
+ * Solo se hidratan como islas cliente las piezas interactivas/animadas:
+ * fondo 3D, hover magnético, social links, reveals on-scroll, filtro de proyectos,
+ * demo RAG, panel de métricas, timeline, toolkit y formulario de contacto.
+ */
 export default function Home() {
-  // State for vertical filter
-  const [activeVertical, setActiveVertical] = useState<ProjectCategory | 'all'>('all');
-
-  // Get filtered projects
-  const filteredProjects = getProjectsByCategory(activeVertical);
   return (
     <main className="relative overflow-hidden">
-      {/* 3D Space Background */}
+      {/* 3D Space Background (isla cliente, lazy + fallback estático) */}
       <SpaceBackground />
 
-      {/* Hero Section */}
+      {/* Hero Section — server-render con entrada CSS (hero-rise); LCP sin gate de JS */}
       <section id="hero" className="relative z-10 flex min-h-screen items-center justify-center px-6">
-        {/* Entrada en CSS (hero-rise): pinta el LCP sin esperar la hidratación de JS */}
         <div className="max-w-5xl text-center">
-          {/* Animated Greeting — acento de ingeniero en mono */}
           <p className="hero-rise hero-rise-1 mb-4 font-mono text-sm font-medium tracking-widest text-accent-cloud">
             {'// hola_mundo, soy'}
           </p>
@@ -53,38 +41,28 @@ export default function Home() {
             </span>
           </h1>
 
-          {/* Rol — mandato de posicionamiento: Cloud + IA, sin ambigüedad */}
           <h2 className="hero-rise hero-rise-3 mb-6 text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-300">
             <span className="text-accent-cloud">Cloud Engineer</span> &{' '}
             <span className="text-accent-ai">AI Solutions Architect</span>
           </h2>
 
-          {/* Description */}
           <p className="hero-rise hero-rise-4 mx-auto mb-10 max-w-2xl text-lg text-slate-400 leading-relaxed">
             {identity.tagline} Los productos que ves aquí —automatización,
             videojuegos, e-commerce— corren sobre esa arquitectura.
           </p>
 
-          {/* Social Links */}
+          {/* Social Links (islas cliente con hover magnético) */}
           <div className="hero-rise hero-rise-5 mb-10 flex items-center justify-center gap-6">
-            <SocialLink href="https://github.com/GianPierooo" icon={Github} label="GitHub" />
-            <SocialLink
-              href="https://linkedin.com/in/gianpierooo/"
-              icon={Linkedin}
-              label="LinkedIn"
-            />
-            <SocialLink href="mailto:gianpierodaniel@gmail.com" icon={Mail} label="Email" />
+            <SocialLink href="https://github.com/GianPierooo" type="github" label="GitHub" />
+            <SocialLink href="https://linkedin.com/in/gianpierooo/" type="linkedin" label="LinkedIn" />
+            <SocialLink href="mailto:gianpierodaniel@gmail.com" type="email" label="Email" />
           </div>
 
-          {/* CTAs: Ver arquitecturas (primario) + Descargar CV (secundario), con hover magnético */}
+          {/* CTAs con hover magnético; scroll nativo (scroll-behavior: smooth) */}
           <div className="hero-rise hero-rise-6 flex flex-wrap items-center justify-center gap-4">
             <Magnetic>
               <a
                 href="#work"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
-                }}
                 className={cn(
                   'group relative overflow-hidden rounded-full px-8 py-4',
                   'bg-gradient-to-r from-accent-cloud/20 to-accent-ai/20',
@@ -123,17 +101,11 @@ export default function Home() {
             </Magnetic>
           </div>
 
-          {/* Tech marquee — curada y jerarquizada: cloud/IA primero */}
-          <div
-            className="hero-rise hero-rise-7 marquee-container relative mt-14 overflow-hidden"
-            aria-label="Tecnologías principales"
-          >
-            {/* Fades laterales */}
+          {/* Tech marquee — estático, animación CSS (curada: cloud/IA primero) */}
+          <div className="hero-rise hero-rise-7 marquee-container relative mt-14 overflow-hidden" aria-label="Tecnologías principales">
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-space-950 to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-space-950 to-transparent" />
-
             <div className="marquee-track flex w-max items-center gap-8">
-              {/* Duplicado para loop continuo */}
               {[...techMarquee, ...techMarquee].map((tech, i) => (
                 <span
                   key={`${tech}-${i}`}
@@ -152,115 +124,45 @@ export default function Home() {
       {/* Projects Section */}
       <section id="work" className="relative z-10 min-h-screen py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="text-center mb-16"
-          >
+          <Reveal className="text-center mb-16">
             <SectionLabel className="mb-3">arquitecturas_en_produccion</SectionLabel>
-            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-4">
-              Proyectos & Soluciones
-            </h2>
+            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-4">Proyectos &amp; Soluciones</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
               Arquitecturas reales desplegadas en producción. Desde sistemas de IA hasta
               infraestructura cloud y automatización empresarial.
             </p>
-          </motion.div>
+          </Reveal>
 
-          {/* Vertical Switcher */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="mb-12"
-          >
-            <VerticalSwitcher
-              activeVertical={activeVertical}
-              onVerticalChange={setActiveVertical}
-            />
-          </motion.div>
-
-          {/* Projects Grid with AnimatePresence */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeVertical}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {filteredProjects.map((project) => (
-                <ProjectCard key={project.slug} project={project} />
-              ))}
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Empty state */}
-          {filteredProjects.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
-              <p className="text-slate-400 text-lg">
-                No hay proyectos en esta categoría aún.
-              </p>
-            </motion.div>
-          )}
+          {/* Isla cliente: filtro de verticales + grid animado */}
+          <ProjectsExplorer />
         </div>
       </section>
 
       {/* AI Demo Section — el diferenciador: RAG interactiva en vivo (§6.1) */}
       <section id="ai" className="relative z-10 py-24 px-6">
         <div className="max-w-5xl mx-auto">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="text-center mb-12"
-          >
+          <Reveal className="text-center mb-12">
             <SectionLabel className="mb-3" color="#8b5cf6">ask_my_ai</SectionLabel>
-            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-4">
-              IA en vivo, no en un slide
-            </h2>
+            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-4">IA en vivo, no en un slide</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
               Un asistente RAG que responde sobre mi perfil recuperando fragmentos reales,
               armando el contexto y generando la respuesta. La misma clase de sistema que
               despliego para clientes.
             </p>
-          </motion.div>
+          </Reveal>
 
-          <motion.div
-            variants={fadeIn}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            <AiChat />
-          </motion.div>
+          <Reveal variant="in">
+            <AiChatLazy />
+          </Reveal>
         </div>
       </section>
 
       {/* About Section */}
       <section id="about" className="relative z-10 min-h-screen py-24 px-6">
         <div className="max-w-5xl mx-auto">
-          <motion.header
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="mb-16"
-          >
+          <Reveal as="header" className="mb-16">
             <SectionLabel className="mb-3" color="#8b5cf6">sobre_mi</SectionLabel>
-            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-6">
-              Sobre Mí
-            </h2>
+            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-6">Sobre Mí</h2>
             <div className="prose prose-invert prose-lg max-w-none">
               <p className="text-xl text-slate-300 leading-relaxed mb-4">
                 Soy <span className="text-white font-semibold">Gian Piero Cano</span>,{' '}
@@ -276,100 +178,31 @@ export default function Home() {
                 —con React, Next.js o Godot— corren sobre esa base. Finalista Startup UTP entre 300+ equipos.
               </p>
             </div>
-          </motion.header>
+          </Reveal>
 
-          {/* Panel de métricas tipo observabilidad — solo cifras reales confirmadas */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="mb-20"
-          >
+          {/* Panel de métricas tipo observabilidad — isla cliente */}
+          <Reveal className="mb-20">
             <StatsPanel />
-          </motion.div>
+          </Reveal>
 
-          <motion.section
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="mb-20"
-          >
+          <Reveal as="section" className="mb-20">
             <SectionLabel className="mb-3">experiencia</SectionLabel>
             <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
               <Wrench className="h-8 w-8 text-accent-cloud" />
               Experiencia Profesional
             </h3>
             <ExperienceTimeline experiences={experiences} />
-          </motion.section>
+          </Reveal>
 
-          <motion.section
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
+          <Reveal as="section">
             <SectionLabel className="mb-3" color="#8b5cf6">stack_tecnologico</SectionLabel>
             <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
               <Server className="h-8 w-8 text-accent-ai" />
               Stack Tecnológico
             </h3>
-
-            <motion.div
-              variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {toolkit.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <motion.div
-                    key={category.category}
-                    variants={fadeUp}
-                    className={cn(
-                      'glass rounded-xl p-6',
-                      'border border-slate-800 hover:border-slate-700',
-                      'transition-all duration-300',
-                      'hover:shadow-lg'
-                    )}
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div
-                        className="p-2 rounded-lg"
-                        style={{
-                          backgroundColor: `${category.color}20`,
-                          border: `1px solid ${category.color}40`,
-                        }}
-                      >
-                        <Icon
-                          className="h-6 w-6"
-                          style={{ color: category.color }}
-                        />
-                      </div>
-                      <h4 className="text-lg font-semibold text-white">
-                        {category.category}
-                      </h4>
-                    </div>
-
-                    <ul className="space-y-2">
-                      {category.tools.map((tool) => (
-                        <li
-                          key={tool}
-                          className="text-sm text-slate-400 flex items-center gap-2"
-                        >
-                          <span
-                            className="w-1.5 h-1.5 rounded-full"
-                            style={{ backgroundColor: category.color }}
-                          />
-                          <span>{tool}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.section>
+            {/* Isla cliente: grid con stagger */}
+            <ToolkitGrid />
+          </Reveal>
         </div>
       </section>
 
@@ -377,19 +210,11 @@ export default function Home() {
       <section id="contact" className="relative z-10 min-h-screen py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            <motion.div
-              variants={fadeLeft}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              className="space-y-8"
-            >
+            <Reveal variant="left" className="space-y-8">
               <div>
                 <SectionLabel className="mb-3">contacto</SectionLabel>
                 <div className="h-1 w-16 bg-gradient-to-r from-accent-cloud to-accent-ai mb-6 rounded-full" />
-                <h2 className="text-5xl sm:text-6xl font-bold text-white mb-6">
-                  Trabajemos Juntos
-                </h2>
+                <h2 className="text-5xl sm:text-6xl font-bold text-white mb-6">Trabajemos Juntos</h2>
                 <p className="text-lg text-slate-400 leading-relaxed">
                   Estoy interesado en oportunidades para colaborar en proyectos innovadores
                   y desafiantes. Si tienes alguna propuesta, pregunta o simplemente quieres
@@ -397,77 +222,10 @@ export default function Home() {
                 </p>
               </div>
 
-              <motion.div
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                className="space-y-4"
-              >
-                {contactInfo.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <motion.div key={item.label} variants={fadeUp}>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          target={item.href.startsWith('http') ? '_blank' : undefined}
-                          rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className={cn(
-                            'flex items-center gap-4 p-4 rounded-xl',
-                            'glass border border-slate-800 hover:border-slate-700',
-                            'transition-all duration-300 group',
-                            'hover:scale-[1.02]'
-                          )}
-                        >
-                          <div
-                            className="p-3 rounded-lg"
-                            style={{
-                              backgroundColor: `${item.color}20`,
-                              border: `1px solid ${item.color}40`,
-                            }}
-                          >
-                            <Icon className="h-6 w-6" style={{ color: item.color }} />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm text-slate-500 font-medium">{item.label}</p>
-                            <p className="text-white group-hover:text-accent-cloud transition-colors">
-                              {item.value}
-                            </p>
-                          </div>
-                        </a>
-                      ) : (
-                        <div
-                          className={cn(
-                            'flex items-center gap-4 p-4 rounded-xl',
-                            'glass border border-slate-800'
-                          )}
-                        >
-                          <div
-                            className="p-3 rounded-lg"
-                            style={{
-                              backgroundColor: `${item.color}20`,
-                              border: `1px solid ${item.color}40`,
-                            }}
-                          >
-                            <Icon className="h-6 w-6" style={{ color: item.color }} />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm text-slate-500 font-medium">{item.label}</p>
-                            <p className="text-white">{item.value}</p>
-                          </div>
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
+              {/* Isla cliente: tarjetas de contacto con stagger */}
+              <ContactInfoList />
 
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
+              <div
                 className={cn(
                   'flex items-center gap-3 p-4 rounded-xl',
                   'glass border border-accent-ai/30',
@@ -478,61 +236,16 @@ export default function Home() {
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75" />
                 </div>
-                <p className="text-slate-300 font-medium">
-                  Disponible para nuevos proyectos
-                </p>
-              </motion.div>
-            </motion.div>
+                <p className="text-slate-300 font-medium">Disponible para nuevos proyectos</p>
+              </div>
+            </Reveal>
 
-            <motion.div
-              variants={fadeRight}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              className={cn(
-                'glass rounded-2xl p-8 border border-slate-800'
-              )}
-            >
+            <Reveal variant="right" className="glass rounded-2xl p-8 border border-slate-800">
               <ContactForm />
-            </motion.div>
+            </Reveal>
           </div>
         </div>
       </section>
     </main>
-  );
-}
-
-/**
- * Social Link Component with glassmorphism and hover effects
- */
-function SocialLink({
-  href,
-  icon: Icon,
-  label,
-}: {
-  href: string;
-  icon: LucideIcon;
-  label: string;
-}) {
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      className={cn(
-        'group relative flex h-12 w-12 items-center justify-center rounded-full',
-        'glass hover:bg-white/10',
-        'transition-all duration-300',
-        'hover:scale-110 active:scale-100'
-      )}
-      whileHover={{ y: -4 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      {/* Glow effect */}
-      <div className="absolute inset-0 -z-10 rounded-full bg-accent-cloud opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-40" />
-      
-      <Icon className="h-5 w-5 shrink-0 text-slate-300 transition-colors group-hover:text-white" />
-    </motion.a>
   );
 }
