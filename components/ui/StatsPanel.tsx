@@ -37,7 +37,7 @@ export default function StatsPanel() {
         className="grid grid-cols-1 divide-y divide-slate-800 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
       >
         {stats.map((stat) => (
-          <motion.div key={stat.key} variants={fadeUp} className="p-6">
+          <motion.div key={stat.key} variants={fadeUp} data-reveal className="p-6">
             {/* clave + punto de estado */}
             <div className="mb-3 flex items-center gap-2">
               <span

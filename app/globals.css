@@ -170,6 +170,19 @@
   }
 }
 
+/* Reduced-motion: fuerza visible el contenido revelado por framer-motion.
+   Framer aplica opacity:0 / transform inline como estado inicial del reveal; si
+   la animación no completa (o para respetar la preferencia), el contenido debe
+   quedar visible igual. `!important` gana a los estilos inline. Es idéntico en
+   server y cliente (regla CSS pura) → sin desajuste de hidratación. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
 /* Tech marquee del hero — CSS puro para no cargar JS extra */
 @keyframes marquee-scroll {
   from {

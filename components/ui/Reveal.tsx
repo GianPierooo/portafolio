@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { fadeUp, fadeIn, fadeLeft, fadeRight, viewportOnce } from '@/lib/motion';
 
 const variantMap = {
@@ -29,16 +29,14 @@ export default function Reveal({
   as?: 'div' | 'section' | 'header';
 }) {
   const MotionTag = motion[as];
-  const reduced = useReducedMotion();
   return (
     <MotionTag
       variants={variantMap[variant]}
-      // Con reduced-motion no ocultamos el contenido (evita secciones en
-      // opacity:0 si el reveal no se dispara). Sin reduced-motion, reveal normal.
-      initial={reduced ? false : 'hidden'}
+      initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
       className={className}
+      data-reveal
     >
       {children}
     </MotionTag>

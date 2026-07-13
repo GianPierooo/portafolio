@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ExternalLink, Github, Play, ArrowRight, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,6 @@ const MAX_TILT = 4;
  */
 export default function ProjectCard({ project }: ProjectCardProps) {
   const router = useRouter();
-  const reduced = useReducedMotion();
   const tiltRef = useRef<HTMLDivElement>(null);
   // Solo desktop con puntero fino y sin reduced-motion (se evalúa una vez)
   const interactiveRef = useRef(false);
@@ -72,12 +71,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         onMouseLeave={handleMouseLeave}
         layout
         variants={scaleIn}
-        // Con reduced-motion: sin estado inicial oculto (evita que el card
-        // quede en opacity:0 si la animación de entrada no corre).
-        initial={reduced ? false : 'hidden'}
+        initial="hidden"
         animate="visible"
-        exit={reduced ? undefined : 'hidden'}
+        exit="hidden"
         transition={{ duration: durations.fast, ease: easeOut }}
+        data-reveal
         className="group aspect-[4/3] cursor-pointer"
         style={{
           ['--accent-color' as string]: accentColor,

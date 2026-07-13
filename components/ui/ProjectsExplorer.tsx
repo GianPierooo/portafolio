@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import VerticalSwitcher from '@/components/ui/VerticalSwitcher';
 import ProjectCard from '@/components/ui/ProjectCard';
 import { ProjectCategory, getProjectsByCategory } from '@/lib/data';
@@ -25,6 +25,7 @@ export default function ProjectsExplorer() {
         whileInView="visible"
         viewport={viewportOnce}
         className="mb-12"
+        data-reveal
       >
         <VerticalSwitcher
           activeVertical={activeVertical}
@@ -32,23 +33,21 @@ export default function ProjectsExplorer() {
         />
       </motion.div>
 
-      {/* Grid con AnimatePresence POR CARD (usa layout + exit del ProjectCard):
-          al cambiar la vertical, los cards que salen se animan a hidden y los
-          que entran aparecen; los que permanecen refluyen con `layout`.
-          Robusto bajo prefers-reduced-motion. */}
+      {/* Grid sin AnimatePresence: al cambiar la vertical React desmonta los
+          cards filtrados de inmediato y monta los nuevos (cada uno con su
+          entrada). Robusto bajo prefers-reduced-motion (no depende de que el
+          exit complete). `layout` da reflujo suave a los que permanecen. */}
       <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </AnimatePresence>
+        {filteredProjects.map((project) => (
+          <ProjectCard key={project.slug} project={project} />
+        ))}
       </motion.div>
 
       {/* Empty state */}
       {filteredProjects.length === 0 && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+        <div className="text-center py-20">
           <p className="text-slate-400 text-lg">No hay proyectos en esta categoría aún.</p>
-        </motion.div>
+        </div>
       )}
     </>
   );

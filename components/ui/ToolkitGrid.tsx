@@ -24,6 +24,7 @@ export default function ToolkitGrid() {
           <motion.div
             key={category.category}
             variants={fadeUp}
+            data-reveal
             className={cn(
               'glass rounded-xl p-6',
               'border border-slate-800 hover:border-slate-700',

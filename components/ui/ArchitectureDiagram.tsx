@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { diagrams, type DiagramSpec, type DiagramNode } from '@/lib/diagrams';
 import { easeOut } from '@/lib/motion';
 
@@ -26,7 +26,6 @@ const SLATE = '#64748b';
  */
 export default function ArchitectureDiagram({ preset, spec }: ArchitectureDiagramProps) {
   const resolved: DiagramSpec | undefined = spec ?? (preset ? diagrams[preset] : undefined);
-  const reduced = useReducedMotion();
 
   if (!resolved) {
     return (
@@ -71,10 +70,13 @@ export default function ArchitectureDiagram({ preset, spec }: ArchitectureDiagra
     },
   };
 
-  // Con reduced-motion no animamos: estado final directo.
-  const animProps = reduced
-    ? { initial: 'visible' as const, animate: 'visible' as const }
-    : { initial: 'hidden' as const, whileInView: 'visible' as const, viewport: { once: true, margin: '-60px' } };
+  // Reveal on-scroll; MotionConfig (reducedMotion="user") salta al estado final
+  // bajo prefers-reduced-motion sin condicionales en render (evita mismatch SSR).
+  const animProps = {
+    initial: 'hidden' as const,
+    whileInView: 'visible' as const,
+    viewport: { once: true, margin: '-60px' },
+  };
 
   return (
     <figure className="my-10">
@@ -92,7 +94,7 @@ export default function ArchitectureDiagram({ preset, spec }: ArchitectureDiagra
           {groups?.map((g, i) => {
             const c = g.color ?? SLATE;
             return (
-              <motion.g key={`group-${i}`} variants={nodeVariant}>
+              <motion.g key={`group-${i}`} variants={nodeVariant} data-reveal>
                 <rect
                   x={g.x}
                   y={g.y}
@@ -128,6 +130,7 @@ export default function ArchitectureDiagram({ preset, spec }: ArchitectureDiagra
             return (
               <motion.path
                 key={`conn-${i}`}
+                data-reveal
                 d={`M ${start.x} ${start.y} L ${end.x} ${end.y}`}
                 fill="none"
                 stroke={color}
@@ -145,7 +148,7 @@ export default function ArchitectureDiagram({ preset, spec }: ArchitectureDiagra
             const w = nodeW(n);
             const color = n.color ?? SLATE;
             return (
-              <motion.g key={n.id} variants={nodeVariant} style={{ transformOrigin: 'center' }}>
+              <motion.g key={n.id} variants={nodeVariant} style={{ transformOrigin: 'center' }} data-reveal>
                 <rect
                   x={n.x - w / 2}
                   y={n.y - NODE_H / 2}

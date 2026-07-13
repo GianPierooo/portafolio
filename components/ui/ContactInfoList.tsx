@@ -21,7 +21,7 @@ export default function ContactInfoList() {
       {contactInfo.map((item) => {
         const Icon = item.icon;
         return (
-          <motion.div key={item.label} variants={fadeUp}>
+          <motion.div key={item.label} variants={fadeUp} data-reveal>
             {item.href ? (
               <a
                 href={item.href}

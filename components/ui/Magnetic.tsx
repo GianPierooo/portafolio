@@ -24,12 +24,11 @@ export default function Magnetic({ children, strength = 0.25, className }: Magne
   const springY = useSpring(y, springs.magnetic);
   const reduced = useReducedMotion();
 
-  if (reduced) {
-    return <div className={className}>{children}</div>;
-  }
-
+  // Estructura idéntica en server y cliente (siempre motion.div) para no
+  // provocar mismatch de hidratación; el efecto se desactiva vía el handler
+  // cuando hay reduced-motion (diferencia de comportamiento, no de render).
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== 'mouse') return;
+    if (reduced || e.pointerType !== 'mouse') return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
