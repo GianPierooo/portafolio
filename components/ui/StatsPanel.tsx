@@ -16,10 +16,10 @@ export default function StatsPanel() {
     <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/50">
       {/* Barra superior estilo dashboard */}
       <div className="flex items-center justify-between border-b border-slate-800 px-5 py-3">
-        <span className="font-mono text-xs tracking-widest text-slate-500">
+        <span className="font-mono text-xs tracking-widest text-slate-400">
           {'// impact_metrics'}
         </span>
-        <span className="flex items-center gap-2 font-mono text-[11px] text-slate-500">
+        <span className="flex items-center gap-2 font-mono text-[11px] text-slate-400">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -44,7 +44,7 @@ export default function StatsPanel() {
                 className="h-1.5 w-1.5 rounded-full"
                 style={{ backgroundColor: stat.color }}
               />
-              <span className="font-mono text-[11px] tracking-wide text-slate-500">
+              <span className="font-mono text-[11px] tracking-wide text-slate-400">
                 {stat.key}
               </span>
             </div>

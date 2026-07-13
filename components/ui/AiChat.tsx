@@ -114,7 +114,7 @@ export default function AiChat() {
           </div>
           <div>
             <h3 className="font-semibold text-white">Pregúntale a mi IA</h3>
-            <p className="font-mono text-xs text-slate-500">
+            <p className="font-mono text-xs text-slate-400">
               retrieval → context → generación · corre sobre mi arquitectura RAG
             </p>
           </div>
@@ -129,7 +129,7 @@ export default function AiChat() {
           aria-live="polite"
         >
           {stage === 'idle' && !error && (
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-400">
               Elige una pregunta o escribe la tuya. Respondo sobre mi perfil, stack cloud/IA y proyectos.
             </p>
           )}
@@ -203,7 +203,7 @@ export default function AiChat() {
           </button>
         </form>
 
-        <p className="mt-3 flex items-center gap-1.5 font-mono text-[11px] text-slate-600">
+        <p className="mt-3 flex items-center gap-1.5 font-mono text-[11px] text-slate-400">
           <CornerDownLeft className="h-3 w-3" />
           demo lite · respuestas curadas sobre retrieval real · el LLM se conecta en producción
         </p>
@@ -243,7 +243,7 @@ function PipelineBar({
                   'flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors duration-300',
                   active
                     ? 'border-accent-ai/50 bg-accent-ai/10 text-white'
-                    : 'border-slate-800 bg-slate-900/40 text-slate-500'
+                    : 'border-slate-800 bg-slate-900/40 text-slate-400'
                 )}
               >
                 <Icon
@@ -277,7 +277,7 @@ function PipelineBar({
             exit={{ opacity: 0, height: 0 }}
             className="mt-3 flex flex-wrap items-center gap-2 overflow-hidden"
           >
-            <span className="font-mono text-[11px] text-slate-500">recuperados:</span>
+            <span className="font-mono text-[11px] text-slate-400">recuperados:</span>
             {chunks.map((c) => (
               <span
                 key={c.id}

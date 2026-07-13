@@ -109,7 +109,7 @@ export default function Home() {
               {[...techMarquee, ...techMarquee].map((tech, i) => (
                 <span
                   key={`${tech}-${i}`}
-                  className="whitespace-nowrap font-mono text-sm text-slate-500"
+                  className="whitespace-nowrap font-mono text-sm text-slate-400"
                   aria-hidden={i >= techMarquee.length}
                 >
                   {tech}

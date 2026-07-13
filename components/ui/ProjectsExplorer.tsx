@@ -32,21 +32,17 @@ export default function ProjectsExplorer() {
         />
       </motion.div>
 
-      {/* Projects Grid with AnimatePresence */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeVertical}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+      {/* Grid con AnimatePresence POR CARD (usa layout + exit del ProjectCard):
+          al cambiar la vertical, los cards que salen se animan a hidden y los
+          que entran aparecen; los que permanecen refluyen con `layout`.
+          Robusto bajo prefers-reduced-motion. */}
+      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <AnimatePresence mode="popLayout">
           {filteredProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
-        </motion.div>
-      </AnimatePresence>
+        </AnimatePresence>
+      </motion.div>
 
       {/* Empty state */}
       {filteredProjects.length === 0 && (

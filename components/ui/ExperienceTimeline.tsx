@@ -81,7 +81,7 @@ export default function ExperienceTimeline({ experiences }: ExperienceTimelinePr
                   >
                     <Briefcase className="h-4 w-4" />
                     <span className="font-medium">{exp.company}</span>
-                    <span className="text-slate-500 group-hover:translate-x-1 transition-transform">
+                    <span className="text-slate-400 group-hover:translate-x-1 transition-transform">
                       →
                     </span>
                   </a>
