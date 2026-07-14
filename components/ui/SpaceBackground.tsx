@@ -60,10 +60,12 @@ export default function SpaceBackground() {
     const w = window as IdleWindow;
     let idleId: number | undefined;
     let timer: number | undefined;
+    // timeout alto: en móvil (hilo saturado) el 3D espera hasta ~2.6s, DESPUÉS
+    // del LCP; en desktop el idle dispara en cuanto el hilo queda libre (~rápido).
     if (typeof w.requestIdleCallback === 'function') {
-      idleId = w.requestIdleCallback(() => setReady(true), { timeout: 1500 });
+      idleId = w.requestIdleCallback(() => setReady(true), { timeout: 2600 });
     } else {
-      timer = window.setTimeout(() => setReady(true), 600);
+      timer = window.setTimeout(() => setReady(true), 1200);
     }
 
     return () => {
