@@ -170,24 +170,7 @@ export default function Navbar() {
                 <Search className="h-5 w-5" />
               </button>
 
-              {/* CV Button - Desktop */}
-              {/* TODO: reemplazar /cv.pdf con la versión enfocada en Cloud+IA (lo actualiza Gian) */}
-              <a
-                href="/cv.pdf"
-                download
-                className={cn(
-                  'hidden md:flex items-center gap-2 px-6 py-2.5 rounded-lg',
-                  'glass hover:bg-white/10',
-                  'text-sm font-semibold text-white',
-                  'transition-all duration-300',
-                  'hover:scale-105 active:scale-100',
-                  'border border-accent-cloud/30'
-                )}
-              >
-                <span>Descargar CV</span>
-              </a>
-
-              {/* Botón ⌘K — móvil (icono) */}
+              {/* Botón búsqueda — móvil (icono) */}
               <button
                 onClick={openCommandPalette}
                 className={cn(

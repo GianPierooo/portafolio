@@ -1,5 +1,6 @@
 import SpaceBackground from '@/components/ui/SpaceBackground';
 import FramedPortrait from '@/components/ui/FramedPortrait';
+import SocialLink from '@/components/ui/SocialLink';
 import Magnetic from '@/components/ui/Magnetic';
 import Reveal from '@/components/ui/Reveal';
 import ProjectsExplorer from '@/components/ui/ProjectsExplorer';
@@ -9,7 +10,7 @@ import ContactInfoList from '@/components/ui/ContactInfoList';
 import ContactForm from '@/components/ui/ContactForm';
 import SectionLabel from '@/components/ui/SectionLabel';
 import RaisedTitle from '@/components/ui/RaisedTitle';
-import { ArrowRight, Wrench } from 'lucide-react';
+import { Download, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { experiences, identity, techMarquee } from '@/lib/profile';
 
@@ -50,18 +51,14 @@ export default function Home() {
               <span className="text-accent-ai">AI Solutions Architect</span>
             </p>
 
-            {/* Tagline en una frase */}
-            <p className="hero-rise hero-rise-5 mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-400 lg:mx-0 lg:text-xl">
-              {identity.tagline}
-            </p>
-
-            {/* Un solo CTA */}
-            <div className="hero-rise hero-rise-6 flex justify-center lg:justify-start">
+            {/* Descargar CV + redes (círculos con logos de marca) */}
+            <div className="hero-rise hero-rise-5 mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
               <Magnetic>
                 <a
-                  href="#work"
+                  href="/cv.pdf"
+                  download
                   className={cn(
-                    'group relative overflow-hidden rounded-full px-9 py-4',
+                    'group relative overflow-hidden rounded-full px-8 py-4',
                     'bg-gradient-to-r from-accent-cloud/20 to-accent-ai/20',
                     'border border-accent-cloud/40 hover:border-accent-cloud/70',
                     'text-lg font-semibold text-white transition-colors duration-300',
@@ -70,11 +67,17 @@ export default function Home() {
                 >
                   <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-cloud to-accent-ai opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-40" />
                   <span className="relative flex items-center gap-2">
-                    Ver trabajo
-                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+                    Descargar CV
+                    <Download className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
                   </span>
                 </a>
               </Magnetic>
+
+              <div className="flex items-center gap-3">
+                <SocialLink href={identity.linkedin} type="linkedin" label="LinkedIn" />
+                <SocialLink href={identity.github} type="github" label="GitHub" />
+                <SocialLink href={`mailto:${identity.email}`} type="email" label="Email" />
+              </div>
             </div>
           </div>
         </div>
@@ -101,25 +104,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Experiencia — sección destacada tras el hero: retrato izq + timeline der */}
-      <section id="experience" className="relative z-10 py-28 px-6 sm:px-10 lg:px-16">
-        <div className="mx-auto grid w-full max-w-[1600px] items-start gap-12 lg:grid-cols-[minmax(0,380px)_1fr] lg:gap-20">
-          {/* Retrato (desktop: izquierda; móvil: arriba) */}
-          <Reveal variant="left">
-            <FramedPortrait />
+      {/* Sobre Mí — corto (un párrafo), encima de Experiencia */}
+      <section id="about" className="relative z-10 py-24 px-6 sm:px-10 lg:px-16">
+        <div className="mx-auto w-full max-w-[1100px] text-center">
+          <SectionLabel className="mb-3" color="#8b5cf6">sobre_mi</SectionLabel>
+          <RaisedTitle as="h2" className="mb-8 text-5xl sm:text-6xl lg:text-7xl">
+            Sobre Mí
+          </RaisedTitle>
+          <Reveal variant="up">
+            <p className="mx-auto max-w-3xl text-xl leading-relaxed text-slate-300 lg:text-2xl">
+              Ingeniero de IA enfocado en la nube. Construyo y despliego sistemas de
+              inteligencia artificial y automatización en producción: agentes y flujos que
+              eliminan trabajo manual, sobre la infraestructura cloud que los sostiene.{' '}
+              <span className="font-semibold text-white">Yo construyo, la IA acelera.</span>
+            </p>
           </Reveal>
+        </div>
+      </section>
 
-          {/* Timeline (desktop: derecha; móvil: abajo) */}
-          <div>
-            <SectionLabel className="mb-3">experiencia</SectionLabel>
-            <div className="mb-10 flex items-center gap-3">
-              <Wrench className="h-8 w-8 shrink-0 text-accent-cloud" />
-              <RaisedTitle as="h2" className="text-4xl sm:text-5xl lg:text-6xl">
-                Experiencia Profesional
-              </RaisedTitle>
-            </div>
-            <ExperienceTimeline experiences={experiences} />
+      {/* Experiencia — timeline a ancho completo (sin la columna de la foto) */}
+      <section id="experience" className="relative z-10 py-28 px-6 sm:px-10 lg:px-16">
+        <div className="mx-auto w-full max-w-[1100px]">
+          <SectionLabel className="mb-3">experiencia</SectionLabel>
+          <div className="mb-10 flex items-center justify-center gap-3 lg:justify-start">
+            <Wrench className="h-8 w-8 shrink-0 text-accent-cloud" />
+            <RaisedTitle as="h2" className="text-4xl sm:text-5xl lg:text-6xl">
+              Experiencia Profesional
+            </RaisedTitle>
           </div>
+          <ExperienceTimeline experiences={experiences} />
         </div>
       </section>
 
