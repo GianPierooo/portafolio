@@ -202,6 +202,21 @@
   }
 }
 
+/* Float lento del recorte flotante (FloatingFigure) — CSS puro. */
+@keyframes photo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.photo-float {
+  animation: photo-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-float {
+    animation: none;
+  }
+}
+
 /* Tech marquee del hero — CSS puro para no cargar JS extra */
 @keyframes marquee-scroll {
   from {

@@ -23,7 +23,7 @@ import { experiences, identity, techMarquee } from '@/lib/profile';
  */
 
 export default function Home() {
-  const hasPhoto = fs.existsSync(path.join(process.cwd(), 'public', 'gian.jpg'));
+  const hasPhoto = fs.existsSync(path.join(process.cwd(), 'public', 'gian.png'));
 
   return (
     <main className="relative overflow-hidden">
