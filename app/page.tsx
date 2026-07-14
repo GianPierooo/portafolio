@@ -1,7 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import SpaceBackground from '@/components/ui/SpaceBackground';
-import HeroPhoto from '@/components/ui/HeroPhoto';
+import FramedPortrait from '@/components/ui/FramedPortrait';
 import Magnetic from '@/components/ui/Magnetic';
 import Reveal from '@/components/ui/Reveal';
 import ProjectsExplorer from '@/components/ui/ProjectsExplorer';
@@ -16,15 +14,9 @@ import { ArrowRight, Server, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { experiences, identity, techMarquee } from '@/lib/profile';
 
-/**
- * Home — SERVER COMPONENT.
- * Se comprueba en build si existe la foto del hero (public/gian.jpg): si está,
- * se muestra; si no, un placeholder. Se reemplaza solo al subir el archivo.
- */
-
+/** Home — SERVER COMPONENT. Contenido estático en servidor; islas cliente solo
+ *  para lo interactivo/animado. */
 export default function Home() {
-  const hasPhoto = fs.existsSync(path.join(process.cwd(), 'public', 'gian.png'));
-
   return (
     <main className="relative overflow-hidden">
       {/* 3D Space Background (isla cliente, lazy + fallback estático) */}
@@ -37,9 +29,9 @@ export default function Home() {
         className="relative z-10 flex min-h-screen items-center px-6 py-28 sm:px-10 lg:px-16"
       >
         <div className="mx-auto grid w-full max-w-[1600px] items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          {/* Foto (desktop: izquierda; móvil: arriba) */}
+          {/* Retrato (desktop: izquierda; móvil: arriba) */}
           <div className="hero-rise hero-rise-1">
-            <HeroPhoto hasPhoto={hasPhoto} priority />
+            <FramedPortrait priority />
           </div>
 
           {/* Texto (desktop: derecha; móvil: abajo) */}
@@ -152,7 +144,7 @@ export default function Home() {
           {/* Sobre Mí: foto izq (desktop) / arriba (móvil) + texto corto der */}
           <div className="mb-28 grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
             <Reveal variant="left">
-              <HeroPhoto hasPhoto={hasPhoto} />
+              <FramedPortrait />
             </Reveal>
 
             <div className="text-center lg:text-left">
