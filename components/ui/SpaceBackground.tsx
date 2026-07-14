@@ -23,6 +23,11 @@ const SpaceScene = dynamic(() => import('./SpaceScene'), {
 
 type Mode = 'static' | 'full' | 'lite';
 
+type IdleWindow = Window & {
+  requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+  cancelIdleCallback?: (id: number) => void;
+};
+
 /**
  * SpaceBackground — decide qué fondo renderizar:
  * - prefers-reduced-motion → estático (única razón para NO animar).
@@ -34,6 +39,10 @@ type Mode = 'static' | 'full' | 'lite';
  */
 export default function SpaceBackground() {
   const [mode, setMode] = useState<Mode>('static');
+  // Diferimos el montaje del Canvas 3D hasta que el hilo esté libre (tras el
+  // LCP). Así el three.js no compite con el primer render (foto/texto del hero)
+  // y Performance en móvil no cae. Hasta entonces se ve el estático.
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -47,12 +56,24 @@ export default function SpaceBackground() {
     decide();
     reduced.addEventListener('change', decide);
     small.addEventListener('change', decide);
+
+    const w = window as IdleWindow;
+    let idleId: number | undefined;
+    let timer: number | undefined;
+    if (typeof w.requestIdleCallback === 'function') {
+      idleId = w.requestIdleCallback(() => setReady(true), { timeout: 1500 });
+    } else {
+      timer = window.setTimeout(() => setReady(true), 600);
+    }
+
     return () => {
       reduced.removeEventListener('change', decide);
       small.removeEventListener('change', decide);
+      if (idleId !== undefined && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
+      if (timer !== undefined) clearTimeout(timer);
     };
   }, []);
 
-  if (mode === 'static') return <StaticSpace />;
+  if (mode === 'static' || !ready) return <StaticSpace />;
   return <SpaceScene lite={mode === 'lite'} />;
 }
