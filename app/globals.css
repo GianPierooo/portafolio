@@ -202,6 +202,51 @@
   }
 }
 
+/* Tarjetas de "Sobre Mí": overlay de contexto al hover (desktop), lift/zoom leve.
+   En táctil (hover:none) el overlay se muestra siempre. Reduced-motion: sin
+   transiciones ni transform. */
+.about-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.about-card__img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.about-card__overlay {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+@media (hover: hover) {
+  .about-card:hover {
+    transform: translateY(-6px);
+  }
+  .about-card:hover .about-card__img {
+    transform: scale(1.06);
+  }
+  .about-card:hover .about-card__overlay,
+  .about-card:focus-within .about-card__overlay {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  /* táctil/móvil: contexto siempre visible (no hay hover) */
+  .about-card__overlay {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-card,
+  .about-card__img,
+  .about-card__overlay {
+    transition: none;
+  }
+  .about-card:hover {
+    transform: none;
+  }
+  .about-card:hover .about-card__img {
+    transform: none;
+  }
+}
+
 /* Float lento del retrato (FramedPortrait) — CSS puro. */
 @keyframes photo-float {
   0%, 100% { transform: translateY(0); }

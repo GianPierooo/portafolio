@@ -1,6 +1,7 @@
 import SpaceBackground from '@/components/ui/SpaceBackground';
 import FramedPortrait from '@/components/ui/FramedPortrait';
 import SocialLink from '@/components/ui/SocialLink';
+import AboutCards from '@/components/ui/AboutCards';
 import Magnetic from '@/components/ui/Magnetic';
 import Reveal from '@/components/ui/Reveal';
 import ProjectsExplorer from '@/components/ui/ProjectsExplorer';
@@ -115,9 +116,15 @@ export default function Home() {
             <p className="mx-auto max-w-3xl text-xl leading-relaxed text-slate-300 lg:text-2xl">
               Ingeniero de IA enfocado en la nube. Construyo y despliego sistemas de
               inteligencia artificial y automatización en producción: agentes y flujos que
-              eliminan trabajo manual, sobre la infraestructura cloud que los sostiene.{' '}
+              eliminan trabajo manual, sobre la infraestructura cloud que los sostiene.
+              También creo videojuegos, donde le doy rienda suelta a la parte más creativa.{' '}
               <span className="font-semibold text-white">Yo construyo, la IA acelera.</span>
             </p>
+          </Reveal>
+
+          {/* 3 tarjetas con overlay de contexto al hover (Threadbare · Logimatix · Kchimbo) */}
+          <Reveal variant="up">
+            <AboutCards />
           </Reveal>
         </div>
       </section>
