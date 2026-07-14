@@ -5,12 +5,11 @@ import Reveal from '@/components/ui/Reveal';
 import ProjectsExplorer from '@/components/ui/ProjectsExplorer';
 import AiChatLazy from '@/components/ui/AiChatLazy';
 import ExperienceTimeline from '@/components/ui/ExperienceTimeline';
-import ToolkitGrid from '@/components/ui/ToolkitGrid';
 import ContactInfoList from '@/components/ui/ContactInfoList';
 import ContactForm from '@/components/ui/ContactForm';
 import SectionLabel from '@/components/ui/SectionLabel';
 import RaisedTitle from '@/components/ui/RaisedTitle';
-import { ArrowRight, Server, Wrench } from 'lucide-react';
+import { ArrowRight, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { experiences, identity, techMarquee } from '@/lib/profile';
 
@@ -102,6 +101,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Experiencia — sección destacada tras el hero: retrato izq + timeline der */}
+      <section id="experience" className="relative z-10 py-28 px-6 sm:px-10 lg:px-16">
+        <div className="mx-auto grid w-full max-w-[1600px] items-start gap-12 lg:grid-cols-[minmax(0,380px)_1fr] lg:gap-20">
+          {/* Retrato (desktop: izquierda; móvil: arriba) */}
+          <Reveal variant="left">
+            <FramedPortrait />
+          </Reveal>
+
+          {/* Timeline (desktop: derecha; móvil: abajo) */}
+          <div>
+            <SectionLabel className="mb-3">experiencia</SectionLabel>
+            <div className="mb-10 flex items-center gap-3">
+              <Wrench className="h-8 w-8 shrink-0 text-accent-cloud" />
+              <RaisedTitle as="h2" className="text-4xl sm:text-5xl lg:text-6xl">
+                Experiencia Profesional
+              </RaisedTitle>
+            </div>
+            <ExperienceTimeline experiences={experiences} />
+          </div>
+        </div>
+      </section>
+
       {/* Projects Section */}
       <section id="work" className="relative z-10 min-h-screen py-24 px-6">
         <div className="max-w-7xl mx-auto">
@@ -138,60 +159,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section — editorial 2 columnas (foto + texto corto), ancho real */}
-      <section id="about" className="relative z-10 min-h-screen py-28 px-6 sm:px-10 lg:px-16">
-        <div className="mx-auto w-full max-w-[1600px]">
-          {/* Sobre Mí: foto izq (desktop) / arriba (móvil) + texto corto der */}
-          <div className="mb-28 grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-            <Reveal variant="left">
-              <FramedPortrait />
-            </Reveal>
-
-            <div className="text-center lg:text-left">
-              <SectionLabel className="mb-3" color="#8b5cf6">sobre_mi</SectionLabel>
-              <RaisedTitle as="h2" className="mb-8 text-5xl sm:text-6xl lg:text-7xl">
-                Sobre Mí
-              </RaisedTitle>
-              <Reveal variant="up" className="space-y-5">
-                <p className="text-2xl font-semibold leading-snug text-slate-200 lg:text-3xl">
-                  Ingeniero cloud que construye{' '}
-                  <span className="text-accent-ai">sistemas de IA en producción</span>.
-                </p>
-                <p className="mx-auto max-w-xl text-lg leading-relaxed text-slate-400 lg:mx-0">
-                  Diseño la infraestructura y los agentes inteligentes detrás de{' '}
-                  <span className="text-accent-cloud">Logimatix</span> y{' '}
-                  <span className="text-accent-cloud">Kchimbo</span>. El desarrollo web y de
-                  videojuegos es solo la capa de entrega.
-                </p>
-              </Reveal>
-            </div>
-          </div>
-
-          {/* Experiencia (título con relieve) */}
-          <Reveal as="section" className="mb-28">
-            <SectionLabel className="mb-3">experiencia</SectionLabel>
-            <div className="mb-10 flex items-center gap-3">
-              <Wrench className="h-8 w-8 shrink-0 text-accent-cloud" />
-              <RaisedTitle as="h3" className="text-3xl sm:text-4xl">
-                Experiencia Profesional
-              </RaisedTitle>
-            </div>
-            <ExperienceTimeline experiences={experiences} />
-          </Reveal>
-
-          <Reveal as="section">
-            <SectionLabel className="mb-3" color="#8b5cf6">stack_tecnologico</SectionLabel>
-            <div className="mb-10 flex items-center gap-3">
-              <Server className="h-8 w-8 shrink-0 text-accent-ai" />
-              <RaisedTitle as="h3" className="text-3xl sm:text-4xl">
-                Stack Tecnológico
-              </RaisedTitle>
-            </div>
-            {/* Isla cliente: grid con stagger */}
-            <ToolkitGrid />
-          </Reveal>
-        </div>
-      </section>
 
       {/* Contact Section */}
       <section id="contact" className="relative z-10 min-h-screen py-24 px-6">

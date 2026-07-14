@@ -19,8 +19,8 @@ function openCommandPalette() {
  */
 const navLinks = [
   { href: '#hero', label: 'Inicio' },
+  { href: '#experience', label: 'Experiencia' },
   { href: '#work', label: 'Proyectos' },
-  { href: '#about', label: 'Sobre Mí' },
   { href: '#contact', label: 'Contacto' },
 ];
 
@@ -40,7 +40,7 @@ export default function Navbar() {
       setIsScrolled(window.scrollY > 50);
 
       // Determine active section with better threshold
-      const sections = ['hero', 'work', 'about', 'contact'];
+      const sections = ['hero', 'experience', 'work', 'contact'];
       const current = sections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
